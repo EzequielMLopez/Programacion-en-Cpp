@@ -146,7 +146,7 @@ int main(int argc, char **argv, char **envp) {
         << "0- Sale del programa\n"
         << "Ingrese la accion que desea realizar: ";
     cin >> choice;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // LIMPIA TODO
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
     switch (choice) {
     case 1:
