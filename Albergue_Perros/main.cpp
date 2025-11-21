@@ -22,11 +22,7 @@ PERROS::PERROS(char *nomine) {
   strcpy(nombre, nomine);
 };
 
-PERROS::~PERROS() {
-  cout << "Estamos eliminando a los perritos, aunque despues los vamos a hacer "
-          "persistentes :)"
-       << endl;
-};
+PERROS::~PERROS() { cout << "Estamos eliminando a " << nombre << endl; };
 
 class PERRERA {
 public:
@@ -69,6 +65,7 @@ public:
   SUCURSAL();
   ~SUCURSAL();
   void AGREGAR_PERRERA(char *);
+  void AGREGAR_PERRITO(char *);
 };
 
 SUCURSAL::SUCURSAL() { INICIO = NULL; };
@@ -117,17 +114,71 @@ void SUCURSAL::AGREGAR_PERRERA(char *nome) {
 
   // Se recorre la lista hasta la ultima posicion agregando la nueva perrera al
   // final.
-  while (P) {
+  while (P->SIG) {
     P = P->SIG;
   }
 
   P->SIG = nuevo;
+
+  return;
+}
+
+void SUCURSAL::AGREGAR_PERRITO(char *perre) {
+  PERRERA *P;
+  PERROS *PE, *nuevo;
+  char perrito[20];
+  int flag = 0;
+
+  P = INICIO;
+
+  if (INICIO == NULL) {
+    cout << "No hay ninguna perrera ingresada como para permitir el ingreso de "
+            "un perrito/a, favor de antes crear una perrera."
+         << endl;
+    return;
+  }
+
+  while (P) {
+    if (!strcmp(P->nombre, perre)) {
+      PE = P->INIP;
+
+      cout << "\tIngrese el nombre del nuevo integrante del grupo: ";
+      cin.getline(perrito, 20);
+      nuevo = new PERROS(perrito);
+      cout << "\tCual es la edad del perrito/a: ";
+      cin >> nuevo->edad;
+
+      if (P->INIP == NULL) {
+        P->INIP = nuevo;
+        return;
+      }
+
+      while (PE->SIG) {
+        PE = PE->SIG;
+      }
+      PE->SIG = nuevo;
+
+      break;
+    } else {
+      flag = 1;
+    }
+
+    P = P->SIG;
+  }
+
+  if (flag == 1) {
+    cout << "La perrera cuestion no se encuentra en nuestra Base de Datos, le "
+            "pedimos que la cree para poder ingresar perritos en la misma."
+         << endl;
+  }
+
+  return;
 }
 
 int main(int argc, char **argv, char **envp) {
   SUCURSAL S;
   int cantidad = 0, i = 0, choice;
-  char perrera[20];
+  char perrera[20], perrera_elegida[20], know;
 
   cout << "Bienvenido al Albergue de Perros simulado" << endl;
 
@@ -153,6 +204,40 @@ int main(int argc, char **argv, char **envp) {
       cout << "\tEscoge un nombre para la nueva perrera: ";
       cin.getline(perrera, 20);
       S.AGREGAR_PERRERA(perrera);
+      break;
+
+    case 2:
+      cout << "\tSabe el nombre de la perrera en donde desea ingresar al nuevo "
+              "integrante S(Si) N(No): ";
+      cin >> know;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+
+      if (know == 'S') {
+        cout << "\tColoca por favor el nombre de la perrera a donde esta "
+                "destinado el nuevo perrito/a: ";
+        cin.getline(perrera, 20);
+        S.AGREGAR_PERRITO(perrera);
+      } else {
+        cout << "\tEste es el listado de las perreras que actualmente tenemos "
+                "en nuestra base de datos:";
+        // S.MOSTRAR_PERRERAS();
+        cout << "\tLa perrera deseada se encuentra entre una de ellas? S(Si) "
+                "N(No): ";
+        cin >> know;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+
+        if (know == 'S') {
+          cout << "\tFavor de indicar el nombre de la misma: ";
+          cin.getline(perrera_elegida, 20);
+          S.AGREGAR_PERRITO(perrera_elegida);
+        } else {
+          cout << "Siendo que no conoce el nombre de la perrera ni tampoco la "
+                  "supo reconocer en el listado dado, le pedimos que cree la "
+                  "Perrera para poder ingresar a los perritos"
+               << endl;
+        }
+      }
+
       break;
     }
   }
