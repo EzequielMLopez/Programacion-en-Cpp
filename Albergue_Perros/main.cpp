@@ -233,7 +233,7 @@ int main(int argc, char **argv, char **envp) {
         } else {
           cout << "Siendo que no conoce el nombre de la perrera ni tampoco la "
                   "supo reconocer en el listado dado, le pedimos que cree la "
-                  "Perrera para poder ingresar a los perrito"
+                  "Perrera para poder ingresar a los perritos"
                << endl;
         }
       }
