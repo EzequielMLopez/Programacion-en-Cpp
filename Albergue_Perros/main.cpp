@@ -67,6 +67,7 @@ public:
   void AGREGAR_PERRERA(char *);
   void AGREGAR_PERRITO(char *);
   void MOSTRAR_PERRERAS();
+  void MOSTRAR_PERRITOS();
 };
 
 SUCURSAL::SUCURSAL() { INICIO = NULL; };
@@ -188,6 +189,47 @@ void SUCURSAL::MOSTRAR_PERRERAS() {
   }
 }
 
+void SUCURSAL::MOSTRAR_PERRITOS() {
+  PERRERA *P;
+  PERROS *PE;
+  char perrera[20];
+
+  if (INICIO == NULL) {
+    cout << "\tNo existen perreras actualmente, favor de crear alguna con la "
+            "opcion 1 del menu del programa"
+         << endl;
+    return;
+  }
+
+  P = INICIO;
+
+  cout << "\tIngrese el nombre de la perrera de donde desea saber los "
+          "perritos que contiene: ";
+  cin.getline(perrera, 20);
+
+  while (P) {
+    if (!strcmp(P->nombre, perrera)) {
+      if (P->INIP == NULL) {
+        cout << "\tEn esta perrera no hay perritos ingresados, favor de "
+                "ingresar uno con la opcion 2 del menu del programa"
+             << endl;
+        return;
+      }
+
+      PE = P->INIP;
+
+      while (PE) {
+        cout << "\t\t" << PE->nombre << " - " << PE->edad << endl;
+        PE = PE->SIG;
+      }
+    }
+
+    P = P->SIG;
+  }
+
+  return;
+}
+
 int main(int argc, char **argv, char **envp) {
   SUCURSAL S;
   int cantidad = 0, i = 0, choice;
@@ -258,6 +300,10 @@ int main(int argc, char **argv, char **envp) {
     case 3:
       cout << "\tLas perreras con las que contamos son:" << endl;
       S.MOSTRAR_PERRERAS();
+      break;
+
+    case 4:
+      S.MOSTRAR_PERRITOS();
       break;
     }
   }
