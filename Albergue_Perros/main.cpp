@@ -27,7 +27,7 @@ PERROS::~PERROS() { cout << "Estamos eliminando a " << nombre << endl; };
 class PERRERA {
 public:
   char nombre[20], pais[20], provincia[20], partido[20], localidad[20],
-      direccion[20];
+      direccion[40];
   int altura;
   PERROS *INIP;
   PERRERA *SIG;
@@ -66,6 +66,7 @@ public:
   ~SUCURSAL();
   void AGREGAR_PERRERA(char *);
   void AGREGAR_PERRITO(char *);
+  void MOSTRAR_PERRERAS();
 };
 
 SUCURSAL::SUCURSAL() { INICIO = NULL; };
@@ -98,7 +99,7 @@ void SUCURSAL::AGREGAR_PERRERA(char *nome) {
   cout << "\tLocalidad: ";
   cin.getline(nuevo->localidad, 20);
   cout << "\tDireccion: ";
-  cin.getline(nuevo->direccion, 20);
+  cin.getline(nuevo->direccion, 40);
   cout << "\tAltura: ";
   cin >> nuevo->altura;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -175,6 +176,18 @@ void SUCURSAL::AGREGAR_PERRITO(char *perre) {
   return;
 }
 
+void SUCURSAL::MOSTRAR_PERRERAS() {
+  PERRERA *P;
+
+  P = INICIO;
+
+  while (P) {
+    cout << "\t\t" << P->nombre << " - " << P->provincia << " - "
+         << P->direccion << " " << P->altura << endl;
+    P = P->SIG;
+  }
+}
+
 int main(int argc, char **argv, char **envp) {
   SUCURSAL S;
   int cantidad = 0, i = 0, choice;
@@ -188,12 +201,14 @@ int main(int argc, char **argv, char **envp) {
            "entre las siguientes opciones:\n"
         << "1- Agregar una perrera nueva\n"
         << "2- Agregar perritos a una perrera ya existente\n"
-        << "3- Eliminar perreras (esto incluye la perdida de los datos de los "
+        << "3- Mostrar Perreras\n"
+        << "4- Mostrar Perritos de una Perrera determinada\n"
+        << "5- Eliminar perreras (esto incluye la perdida de los datos de los "
            "perritos)\n"
-        << "4- Mover los datos de algunos u todos los perritos a otra perrera\n"
-        << "5- Buscar un perro especifigo en una perrera concreta o en todas\n"
-        << "6- Eliminar un perrito de alguna perrera especifica\n"
-        << "7- Modificar los datos de un perro o perrera\n"
+        << "6- Mover los datos de algunos u todos los perritos a otra perrera\n"
+        << "7- Buscar un perro especifigo en una perrera concreta o en todas\n"
+        << "8- Eliminar un perrito de alguna perrera especifica\n"
+        << "9- Modificar los datos de un perro o perrera\n"
         << "0- Sale del programa\n"
         << "Ingrese la accion que desea realizar: ";
     cin >> choice;
@@ -219,8 +234,9 @@ int main(int argc, char **argv, char **envp) {
         S.AGREGAR_PERRITO(perrera);
       } else {
         cout << "\tEste es el listado de las perreras que actualmente tenemos "
-                "en nuestra base de datos:";
-        // S.MOSTRAR_PERRERAS();
+                "en nuestra base de datos:"
+             << endl;
+        S.MOSTRAR_PERRERAS();
         cout << "\tLa perrera deseada se encuentra entre una de ellas? S(Si) "
                 "N(No): ";
         cin >> know;
@@ -237,7 +253,11 @@ int main(int argc, char **argv, char **envp) {
                << endl;
         }
       }
+      break;
 
+    case 3:
+      cout << "\tLas perreras con las que contamos son:" << endl;
+      S.MOSTRAR_PERRERAS();
       break;
     }
   }
