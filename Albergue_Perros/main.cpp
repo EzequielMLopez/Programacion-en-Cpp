@@ -12,12 +12,12 @@ class PERROS {
 public:
   char nombre[20];
   int edad;
-  PERROS *SIG;
-  PERROS(char *);
+  PERROS* SIG;
+  PERROS(char*);
   ~PERROS();
 };
 
-PERROS::PERROS(char *nomine) {
+PERROS::PERROS(char* nomine) {
   edad = 0;
   SIG = NULL;
   strcpy(nombre, nomine);
@@ -27,16 +27,15 @@ PERROS::~PERROS() { cout << "Estamos eliminando a " << nombre << endl; };
 
 class PERRERA {
 public:
-  char nombre[20], pais[20], provincia[20], partido[20], localidad[20],
-      direccion[40];
+  char nombre[20], pais[20], provincia[20], partido[20], localidad[20], direccion[40];
   int altura;
-  PERROS *INIP;
-  PERRERA *SIG;
-  PERRERA(char *);
+  PERROS* INIP;
+  PERRERA* SIG;
+  PERRERA(char*);
   ~PERRERA();
 };
 
-PERRERA::PERRERA(char *name) {
+PERRERA::PERRERA(char* name) {
   altura = 0;
   INIP = NULL;
   SIG = NULL;
@@ -48,8 +47,7 @@ PERRERA::~PERRERA() {
 
   P = INIP;
 
-  cout << "Eliminando perrera '" << nombre << "' hasta hacerla persistente :/"
-       << endl;
+  cout << "Eliminando perrera '" << nombre << "' hasta hacerla persistente :/" << endl;
 
   while (P) {
     AUX = P;
@@ -60,21 +58,23 @@ PERRERA::~PERRERA() {
 
 class SUCURSAL {
 private:
-  PERRERA *INICIO;
-  void REORDENAR(PERRERA *, PERROS **, int);
-  void DESACOPLAR(PERRERA *, PERROS **, int);
+  PERRERA* INICIO;
+  void REORDENAR(PERRERA*, PERROS**, int);
+  void DESACOPLAR(PERRERA*, PERROS**, int);
 
 public:
   SUCURSAL();
   ~SUCURSAL();
-  void AGREGAR_PERRERA(char *);
-  void AGREGAR_PERRITO(char *);
+  void AGREGAR_PERRERA(char*);
+  void AGREGAR_PERRITO(char*);
   void MOSTRAR_PERRERAS();
   void MOSTRAR_PERRITOS();
-  void ELIMINAR_PERRERA(char *); // Se elimina una unica perrera
-  void ELIMINAR_PERRERA(); // Sobre carga para eliminar a todas las perreras
+  void ELIMINAR_PERRERA(char*); // Se elimina una unica perrera
+  void ELIMINAR_PERRERA();      // Sobre carga para eliminar a todas las perreras
   void MOVER_PERRITOS(int);
   void MOVER_PERRITOS();
+  void BUSCAR_PERRITO(char*);
+  void BUSCAR_PERRITO();
 };
 
 SUCURSAL::SUCURSAL() { INICIO = NULL; };
@@ -95,7 +95,7 @@ SUCURSAL::~SUCURSAL() {
   }
 }
 
-void SUCURSAL::REORDENAR(PERRERA *PE, PERROS **PERRITOS, int posicion) {
+void SUCURSAL::REORDENAR(PERRERA* PE, PERROS** PERRITOS, int posicion) {
   PERROS *P, *AUX, *ANTERIOR;
   int i = 0, j = 0;
 
@@ -128,7 +128,6 @@ void SUCURSAL::REORDENAR(PERRERA *PE, PERROS **PERRITOS, int posicion) {
 
       // Cortar puntero SIG para que quede “limpio”
       AUX->SIG = NULL;
-
     } else {
       // Al menos dio una primera vuelta.
       ANTERIOR = P;
@@ -142,8 +141,8 @@ void SUCURSAL::REORDENAR(PERRERA *PE, PERROS **PERRITOS, int posicion) {
   }
 }
 
-void SUCURSAL::AGREGAR_PERRERA(char *nome) {
-  PERRERA *P, *nuevo;
+void SUCURSAL::AGREGAR_PERRERA(char* nome) {
+  PERRERA *PE, *nuevo;
 
   // Se crea una nueva perra y se solicita al usuario los datos pertinentes a la
   // misma.
@@ -170,33 +169,26 @@ void SUCURSAL::AGREGAR_PERRERA(char *nome) {
   }
 
   // Se inicializa el puntero
-  P = INICIO;
+  PE = INICIO;
 
   // Se recorre la lista hasta la ultima posicion agregando la nueva perrera al
   // final.
-  while (P->SIG) {
-    P = P->SIG;
+  while (PE->SIG) {
+    PE = PE->SIG;
   }
 
-  P->SIG = nuevo;
+  PE->SIG = nuevo;
 
   return;
 }
 
-void SUCURSAL::AGREGAR_PERRITO(char *perre) {
-  PERRERA *P;
+void SUCURSAL::AGREGAR_PERRITO(char* perre) {
+  PERRERA* P;
   PERROS *PE, *nuevo;
   char perrito[20];
   int flag = 0;
 
   P = INICIO;
-
-  if (INICIO == NULL) {
-    cout << "No hay ninguna perrera ingresada como para permitir el ingreso de "
-            "un perrito/a, favor de antes crear una perrera."
-         << endl;
-    return;
-  }
 
   while (P) {
     if (!strcmp(P->nombre, perre)) {
@@ -236,13 +228,19 @@ void SUCURSAL::AGREGAR_PERRITO(char *perre) {
 }
 
 void SUCURSAL::MOSTRAR_PERRERAS() {
-  PERRERA *P;
+  PERRERA* P;
 
+  if (INICIO == NULL) {
+    cout << "\t\tNo hay perreras ingresadas, favor de crear al menos una, "
+            "gracias."
+         << endl;
+    return;
+  }
   P = INICIO;
 
   while (P) {
-    cout << "\t\t" << P->nombre << " - " << P->provincia << " - " << P->partido
-         << " - " << P->direccion << " " << P->altura << endl;
+    cout << "\t\t" << P->nombre << " - " << P->provincia << " - " << P->partido << " - " << P->direccion << " "
+         << P->altura << endl;
     P = P->SIG;
   }
 
@@ -250,8 +248,8 @@ void SUCURSAL::MOSTRAR_PERRERAS() {
 }
 
 void SUCURSAL::MOSTRAR_PERRITOS() {
-  PERRERA *P;
-  PERROS *PE;
+  PERRERA* P;
+  PERROS* PE;
   char perrera[20];
 
   if (INICIO == NULL) {
@@ -290,7 +288,7 @@ void SUCURSAL::MOSTRAR_PERRITOS() {
   return;
 }
 
-void SUCURSAL::ELIMINAR_PERRERA(char *perre) {
+void SUCURSAL::ELIMINAR_PERRERA(char* perre) {
   PERRERA *P, *AUX;
   int flag = 0;
 
@@ -401,8 +399,7 @@ void SUCURSAL::MOVER_PERRITOS(int cant) {
         PE = P->INIP;
 
         while (PE) {
-          cout << "\t\tEl perrito actual es: " << PE->nombre << " de edad "
-               << PE->edad << endl;
+          cout << "\t\tEl perrito actual es: " << PE->nombre << " de edad " << PE->edad << endl;
 
           cout << "\t\tDesea mover este perrito? S(Si) N(No): ";
           cin >> choice;
@@ -450,7 +447,6 @@ void SUCURSAL::MOVER_PERRITOS(int cant) {
 
       P = P->SIG;
     }
-
   } else {
     cout << "\tEn este escenario es imcantidadible mover perros de una perrera "
             "a "
@@ -463,7 +459,7 @@ void SUCURSAL::MOVER_PERRITOS(int cant) {
 
 void SUCURSAL::MOVER_PERRITOS() {
   PERRERA *PE, *AUX;
-  PERROS *P;
+  PERROS* P;
   char perrera_from[20], perrera_to[20];
   int cantidad = 0, i = 0, j = 0, flag = 0;
 
@@ -502,7 +498,7 @@ void SUCURSAL::MOVER_PERRITOS() {
     return;
   }
 
-  PERROS *PERRITOS[cantidad];
+  PERROS* PERRITOS[cantidad];
   P = AUX->INIP;
 
   while (P) {
@@ -523,26 +519,127 @@ void SUCURSAL::MOVER_PERRITOS() {
     if (!strcmp(PE->nombre, perrera_to)) {
       P = PE->INIP;
 
-      while (P) {
-        P = P->SIG;
-      }
+      // Si la perrera esta vacia ingresa al if y agrega a todos los perritos
+      if (!P) {
+        PE->INIP = PERRITOS[0];
+        P = PERRITOS[0];
 
-      for (j = 0; j < cantidad; j++) {
-        P = PERRITOS[j];
-        P = P->SIG;
+        for (j = 1; j < cantidad; j++) {
+          P->SIG = PERRITOS[j];
+          P = P->SIG;
+        }
+      } else { // Si la perrera ya cuenta con perrito, entonces ingresa al else y agrega al final.
+
+        while (P->SIG) {
+          P = P->SIG;
+        }
+
+        for (j = 1; j < cantidad; j++) {
+          P->SIG = PERRITOS[j];
+          P = P->SIG;
+        }
       }
 
       break;
-    } else {
-      flag = 1;
-      PE = PE->SIG;
     }
+
+    PE = PE->SIG;
   }
 
   return;
 }
 
-int main(int argc, char **argv, char **envp) {
+void SUCURSAL::BUSCAR_PERRITO(char* perr) {
+  PERRERA* PE;
+  PERROS* P;
+  char perrito[20];
+
+  PE = INICIO;
+
+  cout << "\t\tIngrese el nombre del perrito a buscar: ";
+  cin.getline(perrito, 20);
+
+  while (PE) {
+    if (!strcmp(PE->nombre, perr)) {
+      if (PE->INIP == NULL) {
+        cout << "\t\tNo hay perritos dentro de esta perrera, favor de "
+                "ingresar "
+                "al menos uno con otra opcion del menu principal"
+             << endl;
+        return;
+      }
+
+      P = PE->INIP;
+
+      while (P) {
+        if (!strcmp(P->nombre, perrito)) {
+          cout << "\t\tSe encontro el perrito buscado, sus datos son:\n"
+               << "\t\tNombre: " << P->nombre << "\n"
+               << "\t\tEdad: " << P->edad << endl;
+          return;
+        } else {
+          cout << "\t\tNo se encontro al perrito que estaba buscando :(" << endl;
+          return;
+        }
+
+        P = P->SIG;
+      }
+    }
+
+    PE = PE->SIG;
+  }
+}
+
+void SUCURSAL::BUSCAR_PERRITO() {
+  PERRERA* PE;
+  PERROS* P;
+  char perrito[20];
+  int flag = 0;
+
+  if (INICIO == NULL) {
+    cout << "\t\tNo hay perreras ingresadas, favor de crear al menos una, "
+            "gracias."
+         << endl;
+    return;
+  }
+
+  cout << "\t\tIngrese el nombre del perrito a buscar: ";
+  cin.getline(perrito, 20);
+
+  PE = INICIO;
+
+  while (PE) {
+    if (PE->INIP == NULL) {
+      PE = PE->SIG;
+      continue;
+    } else {
+
+      P = PE->INIP;
+
+      while (P) {
+        if (!strcmp(P->nombre, perrito)) {
+          cout << "\t\tSe encontro el perrito buscado, sus datos son:\n"
+               << "\t\tNombre: " << P->nombre << "\n"
+               << "\t\tEdad: " << P->edad << endl;
+          return;
+        }
+
+        P = P->SIG;
+      }
+    }
+
+    flag = 1;
+  }
+
+  if (flag == 1)
+    cout << "\t\tNo se encontro al perro que se estaba buscando en ninguna "
+            "perrera."
+         << endl;
+
+  return;
+}
+
+int main(int argc, char** argv, char** envp) {
   SUCURSAL S;
   int choice, choice1, cantidad;
   char perrera[20], perrera_elegida[20], know;
@@ -550,117 +647,145 @@ int main(int argc, char **argv, char **envp) {
   cout << "Bienvenido al Albergue de Perros simulado" << endl;
 
   while (choice) {
-    cout
-        << "Para facilitar la gestion de este programa usted puede escoger "
-           "entre las siguientes opciones:\n"
-        << "1- Agregar una perrera nueva\n"
-        << "2- Agregar perritos a una perrera ya existente\n"
-        << "3- Mostrar Perreras\n"
-        << "4- Mostrar Perritos de una Perrera determinada\n"
-        << "5- Eliminar una perrera o todas las perreras (esto incluye la "
-           "perdida de los datos de los "
-           "perritos)\n"
-        << "6- Mover los datos de algunos u todos los perritos a otra perrera\n"
-        << "7- Buscar un perro especifigo en una perrera concreta o en todas\n"
-        << "8- Eliminar un perrito de alguna perrera especifica\n"
-        << "9- Modificar los datos de un perro o perrera\n"
-        << "0- Sale del programa\n"
-        << "Ingrese la accion que desea realizar: ";
+    cout << "Para facilitar la gestion de este programa usted puede escoger "
+            "entre las siguientes opciones:\n"
+         << "1- Agregar una perrera nueva\n"
+         << "2- Agregar perritos a una perrera ya existente\n"
+         << "3- Mostrar Perreras\n"
+         << "4- Mostrar Perritos de una Perrera determinada\n"
+         << "5- Eliminar una perrera o todas las perreras (esto incluye la "
+            "perdida de los datos de los "
+            "perritos)\n"
+         << "6- Mover los datos de algunos u todos los perritos a otra "
+            "perrera\n"
+         << "7- Buscar un perro especifigo en una perrera concreta o en "
+            "todas\n"
+         << "8- Eliminar un perrito de alguna perrera especifica\n"
+         << "9- Modificar los datos de un perro o perrera\n"
+         << "0- Sale del programa\n"
+         << "Ingrese la accion que desea realizar: ";
     cin >> choice;
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
     switch (choice) {
-    case 1:
-      cout << "\tEscoge un nombre para la nueva perrera: ";
-      cin.getline(perrera, 20);
-      S.AGREGAR_PERRERA(perrera);
-      break;
-
-    case 2:
-      cout << "\tSabe el nombre de la perrera en donde desea ingresar al nuevo "
-              "integrante S(Si) N(No): ";
-      cin >> know;
-      cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
-
-      if (know == 'S') {
-        cout << "\tColoca por favor el nombre de la perrera a donde esta "
-                "destinado el nuevo perrito/a: ";
+      case 1:
+        cout << "\tEscoge un nombre para la nueva perrera: ";
         cin.getline(perrera, 20);
-        S.AGREGAR_PERRITO(perrera);
-      } else if (know == 'N') {
-        cout << "\tEste es el listado de las perreras que actualmente tenemos "
-                "en nuestra base de datos:"
-             << endl;
-        S.MOSTRAR_PERRERAS();
-        cout << "\tLa perrera deseada se encuentra entre una de ellas? S(Si) "
-                "N(No): ";
+        S.AGREGAR_PERRERA(perrera);
+        break;
+
+      case 2:
+        cout << "\tSabe el nombre de la perrera en donde desea ingresar al "
+                "nuevo "
+                "integrante S(Si) N(No): ";
         cin >> know;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
         if (know == 'S') {
-          cout << "\tFavor de indicar el nombre de la misma: ";
-          cin.getline(perrera_elegida, 20);
-          S.AGREGAR_PERRITO(perrera_elegida);
+          cout << "\tColoca por favor el nombre de la perrera a donde esta "
+                  "destinado el nuevo perrito/a: ";
+          cin.getline(perrera, 20);
+          S.AGREGAR_PERRITO(perrera);
         } else if (know == 'N') {
-          cout
-              << "\tSiendo que no conoce el nombre de la perrera ni tampoco la "
-                 "supo reconocer en el listado dado, le pedimos que cree la "
-                 "Perrera para poder ingresar a los perritos"
-              << endl;
-        } else {
-          cout << "\tNo es un valor valido, se lo devuelve al menu principal.";
+          cout << "\tEste es el listado de las perreras que actualmente tenemos "
+                  "en nuestra base de datos:"
+               << endl;
+          S.MOSTRAR_PERRERAS();
+          cout << "\tLa perrera deseada se encuentra entre una de ellas? S(Si) "
+                  "N(No): ";
+          cin >> know;
+          cin.ignore(numeric_limits<streamsize>::max(),
+                     '\n'); // Limpia el buffer
+
+          if (know == 'S') {
+            cout << "\tFavor de indicar el nombre de la misma: ";
+            cin.getline(perrera_elegida, 20);
+            S.AGREGAR_PERRITO(perrera_elegida);
+          } else if (know == 'N') {
+            cout << "\tSiendo que no conoce el nombre de la perrera ni tampoco "
+                    "la "
+                    "supo reconocer en el listado dado, le pedimos que cree la "
+                    "Perrera para poder ingresar a los perritos"
+                 << endl;
+          } else {
+            cout << "\tNo es un valor valido, se lo devuelve al menu principal.";
+          }
         }
-      }
-      break;
+        break;
 
-    case 3:
-      cout << "\tLas perreras con las que contamos son:" << endl;
-      S.MOSTRAR_PERRERAS();
-      break;
+      case 3:
+        cout << "\tLas perreras con las que contamos son:" << endl;
+        S.MOSTRAR_PERRERAS();
+        break;
 
-    case 4:
-      S.MOSTRAR_PERRITOS();
-      break;
+      case 4: S.MOSTRAR_PERRITOS(); break;
 
-    case 5:
-      cout << "\tDesea usted:\n"
-           << "\t1- Eliminar una perrera determinada\n"
-           << "\t2- Eliminar todas las perreras\n"
-           << "\tAccion a realizar: ";
-      cin >> choice1;
-      cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
-
-      if (choice1 == 1) {
-        cout << "\tFavor de ingresar el nombre de la Perrera: ";
-        cin.getline(perrera, 20);
-        S.ELIMINAR_PERRERA(perrera);
-      } else if (choice1 == 2) {
-        cout << "\tSe van a eliminar todas las perreras" << endl;
-        S.ELIMINAR_PERRERA();
-      } else {
-        cout << "\tNo corresponde a ninguna opcion para elegir, se devuelve al "
-                "menu principal"
-             << endl;
-      }
-      break;
-
-    case 6:
-      cout << "\tQue desea hacer:\n"
-           << "\t1- Mover algunos perros\n"
-           << "\t2- Mover todos los perros de una perrera a otra\n"
-           << "\tColoque la opcion deseada: ";
-      cin >> choice1;
-      cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
-
-      if (choice1 == 1) {
-        cout << "\t\tCuantos perritos desea mover: ";
-        cin >> cantidad;
+      case 5:
+        cout << "\tDesea usted:\n"
+             << "\t1- Eliminar una perrera determinada\n"
+             << "\t2- Eliminar todas las perreras\n"
+             << "\tAccion a realizar: ";
+        cin >> choice1;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
-        S.MOVER_PERRITOS(cantidad);
-      } else if (choice1 == 2) {
-        S.MOVER_PERRITOS();
-      }
-      break;
+
+        if (choice1 == 1) {
+          cout << "\tFavor de ingresar el nombre de la Perrera: ";
+          cin.getline(perrera, 20);
+          S.ELIMINAR_PERRERA(perrera);
+        } else if (choice1 == 2) {
+          cout << "\tSe van a eliminar todas las perreras" << endl;
+          S.ELIMINAR_PERRERA();
+        } else {
+          cout << "\tNo corresponde a ninguna opcion para elegir, se devuelve "
+                  "al "
+                  "menu principal"
+               << endl;
+        }
+        break;
+
+      case 6:
+        cout << "\tQue desea hacer:\n"
+             << "\t1- Mover algunos perros\n"
+             << "\t2- Mover todos los perros de una perrera a otra\n"
+             << "\tColoque la opcion deseada: ";
+        cin >> choice1;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+
+        if (choice1 == 1) {
+          cout << "\t\tCuantos perritos desea mover: ";
+          cin >> cantidad;
+          cin.ignore(numeric_limits<streamsize>::max(),
+                     '\n'); // Limpia el buffer
+          S.MOVER_PERRITOS(cantidad);
+        } else if (choice1 == 2) {
+          S.MOVER_PERRITOS();
+        }
+        break;
+
+      case 7:
+        cout << "\tEntre las siguientes opciones:\n"
+             << "\t1- Buscar en una perrera concreta\n"
+             << "\t2- Buscar en todas las perreras\n"
+             << "\tCual busqueda prefiere: ";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+
+        if (choice == 1) {
+          cout << "\tEn funcion de la siguiente lista de perreras:" << endl;
+          S.MOSTRAR_PERRERAS();
+          cout << "\tIndique el nombre de la perrera en la que vamos a buscar "
+                  "al "
+                  "perrito: ";
+          cin.getline(perrera, 20);
+          S.BUSCAR_PERRITO(perrera);
+        } else if (choice == 2) {
+          S.BUSCAR_PERRITO();
+        } else {
+          cout << "\tNo se indico ninguna de las opciones validas, se lo "
+                  "devuelve al menu principal"
+               << endl;
+        }
+        break;
     }
   }
 

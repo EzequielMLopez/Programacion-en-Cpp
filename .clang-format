@@ -1,0 +1,19 @@
+BasedOnStyle: LLVM
+
+# 📌 Llaves como vos querés
+BreakBeforeBraces: Attach
+
+# Evita saltos raros entre } y else
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: true
+
+# Compactar else
+IndentCaseLabels: true
+
+# Estética general
+IndentWidth: 2
+ColumnLimit: 120
+SpaceBeforeParens: ControlStatements
+PointerAlignment: Left
+AllowShortIfStatementsOnASingleLine: false
+
