@@ -12,7 +12,7 @@ IndentCaseLabels: true
 
 # Estética general
 IndentWidth: 2
-ColumnLimit: 120
+ColumnLimit: 150
 SpaceBeforeParens: ControlStatements
 PointerAlignment: Left
 AllowShortIfStatementsOnASingleLine: false

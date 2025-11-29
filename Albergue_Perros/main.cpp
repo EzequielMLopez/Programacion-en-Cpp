@@ -11,7 +11,7 @@ using namespace std;
 class PERROS {
 public:
   char nombre[20];
-  int edad;
+  int edad, apuntado = 0;
   PERROS* SIG;
   PERROS(char*);
   ~PERROS();
@@ -60,7 +60,7 @@ class SUCURSAL {
 private:
   PERRERA* INICIO;
   void REORDENAR(PERRERA*, PERROS**, int);
-  void DESACOPLAR(PERRERA*, PERROS**, int);
+  int TOTAL_PERRITOS(char*);
 
 public:
   SUCURSAL();
@@ -72,7 +72,6 @@ public:
   void ELIMINAR_PERRERA(char*); // Se elimina una unica perrera
   void ELIMINAR_PERRERA();      // Sobre carga para eliminar a todas las perreras
   void MOVER_PERRITOS(int);
-  void MOVER_PERRITOS();
   void BUSCAR_PERRITO(char*);
   void BUSCAR_PERRITO();
 };
@@ -110,6 +109,7 @@ void SUCURSAL::REORDENAR(PERRERA* PE, PERROS** PERRITOS, int posicion) {
     for (i = 0; i < posicion; i++) {
       if (P == PERRITOS[i]) {
         seleccionado = true;
+        PERRITOS[i]->apuntado = 1;
         break;
       }
     }
@@ -140,6 +140,38 @@ void SUCURSAL::REORDENAR(PERRERA* PE, PERROS** PERRITOS, int posicion) {
     PERRITOS[j]->SIG = NULL;
   }
 }
+
+int SUCURSAL::TOTAL_PERRITOS(char* perre) {
+  PERRERA* PE;
+  PERROS* P;
+  int perritos = 0, flag;
+
+  PE = INICIO;
+
+  while (PE) {
+    if (!strcmp(PE->nombre, perre)) {
+      if (PE->INIP == NULL) {
+        cout << "\t\tNo hay perritos ingresados en la perrera como para seleccionar.\n"
+             << "\t\tSe lo devuelve al menu principal." << endl;
+        return 1;
+      }
+
+      P = PE->INIP;
+
+      while (P) {
+        perritos += 1;
+        P = P->SIG;
+      }
+
+      return perritos;
+    }
+
+    flag = 2;
+    PE = PE->SIG;
+  }
+
+  return flag;
+};
 
 void SUCURSAL::AGREGAR_PERRERA(char* nome) {
   PERRERA *PE, *nuevo;
@@ -239,8 +271,7 @@ void SUCURSAL::MOSTRAR_PERRERAS() {
   P = INICIO;
 
   while (P) {
-    cout << "\t\t" << P->nombre << " - " << P->provincia << " - " << P->partido << " - " << P->direccion << " "
-         << P->altura << endl;
+    cout << "\t\t" << P->nombre << " - " << P->provincia << " - " << P->partido << " - " << P->direccion << " " << P->altura << endl;
     P = P->SIG;
   }
 
@@ -355,11 +386,11 @@ void SUCURSAL::ELIMINAR_PERRERA() {
   return;
 }
 
-void SUCURSAL::MOVER_PERRITOS(int cant) {
-  PERRERA *P, *AUX;
-  PERROS *PE, *PER[cant];
-  int perreras = 0, cantidad = 0, i = 0;
-  char perrera_from[20], perrera_to[20], choice;
+void SUCURSAL::MOVER_PERRITOS(int choi) {
+  PERRERA *PE, *AUX;
+  PERROS* P;
+  int perreras = 0, cantidad = 0, i = 0, pos = 0, j = 0, flag = 0, k = 0, salir = 0;
+  char perrera_from[20], perrera_to[20], choice, perritos;
 
   if (INICIO == NULL) {
     cout << "\tNo existen perreras actualmente ingresadas, favor de crear al "
@@ -367,183 +398,237 @@ void SUCURSAL::MOVER_PERRITOS(int cant) {
     return;
   }
 
-  P = INICIO;
+  PE = INICIO;
 
-  while (P) {
+  while (PE) {
     perreras += 1;
 
     if (perreras >= 2) {
       break;
     }
 
-    P = P->SIG;
+    PE = PE->SIG;
   }
 
   if (perreras >= 2) {
-    cout << "\tEn funcion de la siguiente lista; ";
-    MOSTRAR_PERRERAS();
-    cout << "\tIngrese el nombre de la perrera desde la cual desea migrar a "
-            "los perritos: ";
-    cin.getline(perrera_from, 20);
+    if (choi == 1) {
+      PE = INICIO;
 
-    P = INICIO;
+      cout << "\tEn funcion de la siguiente lista; ";
+      MOSTRAR_PERRERAS();
+      cout << "\tIngrese el nombre de la perrera desde la cual desea migrar a "
+              "los perritos: ";
+      cin.getline(perrera_from, 20);
+      perritos = TOTAL_PERRITOS(perrera_from);
+      cout << "\t\tLa cantidad de perritos que tiene la perrera es " << perritos << "\n"
+           << "\t\tingrese una cantidad menos o igual al total para movilizar> ";
+      cin >> cantidad;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
-    while (P) {
-      if (!strcmp(perrera_from, P->nombre)) {
-        if (P->INIP == NULL) {
-          cout << "\tEn la perrera ingresada no existen perros ingresados, no "
-                  "se puede migrar algo que no existe.";
-          return;
-        }
+      if (cantidad <= perritos and cantidad > 0) {
+        PERROS* PER[cantidad];
 
-        PE = P->INIP;
+        PE = INICIO;
 
         while (PE) {
-          cout << "\t\tEl perrito actual es: " << PE->nombre << " de edad " << PE->edad << endl;
+          if (!strcmp(perrera_from, PE->nombre)) {
+            if (PE->INIP == NULL) {
+              cout << "\t\tEn la perrera ingresada no existen perros ingresados, no "
+                      "se puede migrar algo que no existe.";
+              return;
+            }
 
-          cout << "\t\tDesea mover este perrito? S(Si) N(No): ";
-          cin >> choice;
-          cin.ignore(numeric_limits<streamsize>::max(),
-                     '\n'); // Limpia el buffer
+            P = PE->INIP;
 
-          if (choice == 'S' and cantidad < cant) {
-            PER[cantidad] = PE;
-            cantidad += 1;
+            while (P) {
+              cout << "\t\tEl perrito actual es: " << P->nombre << " de edad " << P->edad << endl;
+              cout << "\t\tDesea mover este perrito? S(Si) N(No): ";
+              cin >> choice;
+              cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+
+              if (choice == 'S' and pos < cantidad) {
+                PER[pos] = P;
+                pos += 1;
+              }
+
+              P = P->SIG;
+            }
+
+            AUX = PE;
+
+            break;
           }
 
           PE = PE->SIG;
         }
 
-        AUX = P;
+        REORDENAR(AUX, PER, cantidad);
 
-        break;
-      }
+        cout << "\t\tSegun la siguiente lista: " << endl;
+        MOSTRAR_PERRERAS();
+        cout << "\t\tCual es la perrera de destino?: ";
+        cin.getline(perrera_to, 20);
 
-      P = P->SIG;
-    }
+        PE = INICIO;
 
-    REORDENAR(AUX, PER, cantidad);
+        while (PE) {
+          if (!strcmp(PE->nombre, perrera_to)) {
+            P = PE->INIP;
 
-    cout << "\tSegun la siguiente lista: " << endl;
-    MOSTRAR_PERRERAS();
-    cout << "\tCual es la perrera de destino?: ";
-    cin.getline(perrera_to, 20);
+            // Si la perrera esta vacia ingresa al if y agrega a todos los perritos
+            if (!P) {
+              do {
+                if (PER[k]->apuntado == 1) {
+                  PE->INIP = PER[k];
+                  P = PER[k];
+                  salir = 1;
+                } else {
+                  k++;
+                }
+              } while (salir != 1 && k < cantidad);
 
-    P = INICIO;
+              if (k == cantidad) {
+                cout << "\t\tNo se selecciono ningun perro para mover a otra perrera. Se lo devuelve al menu principal." << endl;
+                return;
+              }
 
-    while (P) {
-      if (!strcmp(P->nombre, perrera_to)) {
-        PE = P->INIP;
+              for (j = k; j < cantidad; j++) {
+                if (PER[j]->apuntado == 1) {
+                  P->SIG = PER[j];
+                  P = P->SIG;
+                } else if (PER[j]->apuntado == 0) {
+                  continue;
+                }
+              }
 
-        while (PE->SIG) {
+            } else {
+              while (P->SIG) {
+                P = P->SIG;
+              }
+
+              for (i = 0; i < cantidad; i++) {
+                if (PER[i]->apuntado == 1) {
+                  P->SIG = PER[i];
+                  P = P->SIG;
+                } else if (PER[i]->apuntado == 0) {
+                  continue;
+                }
+              }
+            }
+
+            break;
+          }
+
           PE = PE->SIG;
         }
 
-        for (i = 0; i < cantidad; i++) {
-          PE->SIG = PER[i];
-          PE = PE->SIG;
-        }
+      } else {
+        cout << "\t\tLa cantidad escogida no es un valor valido. Se lo devuelve al menu principal." << endl;
+        return;
       }
 
-      P = P->SIG;
-    }
-  } else {
-    cout << "\tEn este escenario es imcantidadible mover perros de una perrera "
-            "a "
-            "otra dado que la cantidad de perreras actuales son menores a 2"
-         << endl;
-  }
+    } else if (choi == 2) {
+      cout << "\t\tEn funcion de la siguiente lista de perreras:" << endl;
+      MOSTRAR_PERRERAS();
+      cout << "\t\tIngrese el nombre de la perrera desde la que desea migrar a los "
+              "perritos: ";
+      cin.getline(perrera_from, 20);
 
-  return;
-}
+      PE = INICIO;
+      perritos = TOTAL_PERRITOS(perrera_from);
 
-void SUCURSAL::MOVER_PERRITOS() {
-  PERRERA *PE, *AUX;
-  PERROS* P;
-  char perrera_from[20], perrera_to[20];
-  int cantidad = 0, i = 0, j = 0, flag = 0;
+      while (PE) {
+        if (!strcmp(PE->nombre, perrera_from)) {
+          AUX = PE;
+          P = PE->INIP;
 
-  AUX = NULL;
+          cantidad = 0;
 
-  cout << "\tEn funcion de la siguiente lista de perreras:" << endl;
-  MOSTRAR_PERRERAS();
-  cout << "\tIngrese el nombre de la perrera desde la que desea migrar a los "
-          "perritos: ";
-  cin.getline(perrera_from, 20);
+          while (P) {
+            cantidad += 1;
+            P = P->SIG;
+          }
 
-  PE = INICIO;
+          flag = 0;
+          break;
+        }
 
-  while (PE) {
-    if (!strcmp(PE->nombre, perrera_from)) {
-      P = PE->INIP;
-      AUX = PE;
+        flag = 1;
+        PE = PE->SIG;
+      }
+
+      if (flag == 1) {
+        cout << "\tNo se a encontrado la perrera pertinente, se lo devuelve al "
+                "menu principal."
+             << endl;
+        return;
+      }
+
+      PERROS* PER[cantidad];
+      P = AUX->INIP;
+
+      i = 0;
 
       while (P) {
-        cantidad += 1;
+        PER[i] = P;
+        i += 1;
         P = P->SIG;
       }
 
-      flag = 0;
-      break;
-    }
+      REORDENAR(AUX, PER, cantidad);
 
-    flag = 1;
-    PE = PE->SIG;
-  }
+      cout << "\tSegun la lista de perreras previamente mostrada, Ingrese la "
+              "perrera de destino: ";
+      cin.getline(perrera_to, 20);
 
-  if (flag == 1) {
-    cout << "\tNo se a encontrado la perrera pertinente, se lo devuelve al "
-            "menu principal."
-         << endl;
-    return;
-  }
+      PE = INICIO;
 
-  PERROS* PERRITOS[cantidad];
-  P = AUX->INIP;
+      while (PE) {
+        if (!strcmp(PE->nombre, perrera_to)) {
+          P = PE->INIP;
 
-  while (P) {
-    PERRITOS[i] = P;
-    i += 1;
-    P = P->SIG;
-  }
+          // Si la perrera esta vacia ingresa al if y agrega a todos los perritos
+          if (!P) {
+            if (PER[0]->apuntado == 1) {
+              PE->INIP = PER[0];
+              P = PER[0];
+            } else {
+              cout << "\t\tNo hay perros para colocar en la perrera de destino, la proxima vez piense lo que hace.";
+              return;
+            }
 
-  REORDENAR(AUX, PERRITOS, cantidad);
+            for (j = 1; j < cantidad; j++) {
+              if (PER[j]->apuntado == 1) {
+                P->SIG = PER[j];
+                P = P->SIG;
+              } else {
+                continue;
+              }
+            }
+          } else { // Si la perrera ya cuenta con perrito, entonces ingresa al else y agrega al final.
+            while (P->SIG) {
+              P = P->SIG;
+            }
 
-  cout << "\tSegun la lista de perreras previamente mostrada, Ingrese la "
-          "perrera de destino: ";
-  cin.getline(perrera_to, 20);
+            for (j = 0; j < cantidad; j++) {
+              if (PER[j]->apuntado == 1) {
+                P->SIG = PER[j];
+                P = P->SIG;
+              } else {
+                continue;
+              }
+            }
+          }
 
-  PE = INICIO;
-
-  while (PE) {
-    if (!strcmp(PE->nombre, perrera_to)) {
-      P = PE->INIP;
-
-      // Si la perrera esta vacia ingresa al if y agrega a todos los perritos
-      if (!P) {
-        PE->INIP = PERRITOS[0];
-        P = PERRITOS[0];
-
-        for (j = 1; j < cantidad; j++) {
-          P->SIG = PERRITOS[j];
-          P = P->SIG;
-        }
-      } else { // Si la perrera ya cuenta con perrito, entonces ingresa al else y agrega al final.
-
-        while (P->SIG) {
-          P = P->SIG;
+          break;
         }
 
-        for (j = 1; j < cantidad; j++) {
-          P->SIG = PERRITOS[j];
-          P = P->SIG;
-        }
+        PE = PE->SIG;
       }
-
-      break;
     }
-
-    PE = PE->SIG;
+  } else {
+    cout << "\t\tEs imposible dado que en el actual escenario no hay por lo menos dos perreras creadas. Favor de crear al menos dos\n"
+         << "y agregar perritos en cada una." << endl;
   }
 
   return;
@@ -641,7 +726,7 @@ void SUCURSAL::BUSCAR_PERRITO() {
 
 int main(int argc, char** argv, char** envp) {
   SUCURSAL S;
-  int choice, choice1, cantidad;
+  int choice, choice1, cantidad, perritos;
   char perrera[20], perrera_elegida[20], know;
 
   cout << "Bienvenido al Albergue de Perros simulado" << endl;
@@ -752,13 +837,9 @@ int main(int argc, char** argv, char** envp) {
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
         if (choice1 == 1) {
-          cout << "\t\tCuantos perritos desea mover: ";
-          cin >> cantidad;
-          cin.ignore(numeric_limits<streamsize>::max(),
-                     '\n'); // Limpia el buffer
-          S.MOVER_PERRITOS(cantidad);
+          S.MOVER_PERRITOS(choice1);
         } else if (choice1 == 2) {
-          S.MOVER_PERRITOS();
+          S.MOVER_PERRITOS(choice1);
         }
         break;
 
@@ -774,8 +855,7 @@ int main(int argc, char** argv, char** envp) {
           cout << "\tEn funcion de la siguiente lista de perreras:" << endl;
           S.MOSTRAR_PERRERAS();
           cout << "\tIndique el nombre de la perrera en la que vamos a buscar "
-                  "al "
-                  "perrito: ";
+                  "al perrito: ";
           cin.getline(perrera, 20);
           S.BUSCAR_PERRITO(perrera);
         } else if (choice == 2) {
