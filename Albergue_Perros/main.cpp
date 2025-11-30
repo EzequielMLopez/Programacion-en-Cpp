@@ -77,6 +77,7 @@ public:
   void BUSCAR_PERRITO();
   void ELIMINAR_PERRITO();
   void MODIFICAR_PERRITO();
+  void MODIFICAR_PERRERA();
 };
 
 SUCURSAL::SUCURSAL() { INICIO = NULL; };
@@ -877,6 +878,107 @@ void SUCURSAL::MODIFICAR_PERRITO() {
   return;
 }
 
+void SUCURSAL::MODIFICAR_PERRERA() {
+  PERRERA* PE;
+  PERROS* P;
+  char perrera[20], choice;
+  int flag = 0;
+
+  if (INICIO == NULL) {
+    cout << "\t\tNo hay perrera alguna para modificar, cree al menos una para usar esta funcion." << endl;
+    return;
+  }
+
+  cout << "\t\tEn funcion de las siguientes perreras disponibles:" << endl;
+  MOSTRAR_PERRERAS();
+  cout << "\t\tIngrese el nombre de la que desea modificar sus datos: ";
+  cin.getline(perrera, 20);
+
+  PE = INICIO;
+
+  while (PE) {
+    if (!strcmp(PE->nombre, perrera)) {
+      do {
+        cout << "\t\tDesea modificar el Pais? S(Si) N(No): ";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+      } while (choice != 'S' && choice != 'N');
+
+      if (choice == 'S') {
+        cout << "\t\tIngrese el nuevo Pais: ";
+        cin.getline(PE->pais, 20);
+      }
+
+      do {
+        cout << "\t\tDesea modificar la Provincia? S(Si) N(No)";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+      } while (choice != 'S' && choice != 'N');
+
+      if (choice == 'S') {
+        cout << "\t\tIngrese la nueva Provincia: ";
+        cin.getline(PE->provincia, 20);
+      }
+
+      do {
+        cout << "\t\tDesea modificar el Partido? S(Si) N(No): ";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+      } while (choice != 'S' && choice != 'N');
+
+      if (choice == 'S') {
+        cout << "\t\tIngrese el nuevo Partido: ";
+        cin.getline(PE->partido, 40);
+      }
+
+      do {
+        cout << "\t\tDesea modificar la Localidad? S(Si) N(No): ";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+      } while (choice != 'S' && choice != 'N');
+
+      if (choice == 'S') {
+        cout << "\t\tIngrese la nueva Localidad: ";
+        cin.getline(PE->localidad, 20);
+      }
+
+      do {
+        cout << "\t\tDesea modificar la Direccion? S(Si) N(No): ";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+      } while (choice != 'S' && choice != 'N');
+
+      if (choice == 'S') {
+        cout << "\t\tIngrese la nueva Direccion: ";
+        cin.getline(PE->direccion, 20);
+      }
+
+      do {
+        cout << "\t\tDesea modificar la Altura? S(Si) N(No): ";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+      } while (choice != 'S' && choice != 'N');
+
+      if (choice == 'S') {
+        cout << "\t\tIngrese la nueva Altura: ";
+        cin >> PE->altura;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+      }
+
+      flag = 1;
+      break;
+    }
+
+    PE = PE->SIG;
+  }
+
+  if (flag == 0) {
+    cout << "\t\tNo se encontro la perrera especificada. Se lo retorna al Menu Principal." << endl;
+  }
+
+  return;
+}
+
 int main(int argc, char** argv, char** envp) {
   SUCURSAL S;
   int choice, choice1, cantidad, perritos;
@@ -1029,6 +1131,8 @@ int main(int argc, char** argv, char** envp) {
       case 8: S.ELIMINAR_PERRITO(); break;
 
       case 9: S.MODIFICAR_PERRITO(); break;
+
+      case 10: S.MODIFICAR_PERRERA(); break;
     }
   }
 
