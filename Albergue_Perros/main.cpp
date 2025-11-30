@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -74,6 +75,7 @@ public:
   void MOVER_PERRITOS(int);
   void BUSCAR_PERRITO(char*);
   void BUSCAR_PERRITO();
+  void ELIMINAR_PERRITO();
 };
 
 SUCURSAL::SUCURSAL() { INICIO = NULL; };
@@ -724,6 +726,70 @@ void SUCURSAL::BUSCAR_PERRITO() {
   return;
 }
 
+void SUCURSAL::ELIMINAR_PERRITO() {
+  PERRERA* PE;
+  PERROS *P, *ANT;
+  char perrera[20], choice;
+  int i = 1, cant_perritos = 0;
+
+  cout << "\t\tEn funcion de la siguiente lista:" << endl;
+  MOSTRAR_PERRERAS();
+  cout << "\t\tColoque el nombre de la perrera donde esta el perrito a eliminar: ";
+  cin.getline(perrera, 20);
+
+  PE = INICIO;
+
+  while (PE) {
+    if (!strcmp(PE->nombre, perrera)) {
+      if (PE->INIP == NULL) {
+        cout << "\t\tNo hay ningun perro para eliminar.";
+        return;
+      }
+
+      P = PE->INIP;
+
+      while (P) {
+        P = P->SIG;
+        cant_perritos += 1;
+      }
+
+      P = PE->INIP;
+
+      do {
+        cout << "\t\t" << i << " es " << P->nombre << " desea eliminarlo S(Si) N(No): ";
+        cin >> choice;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+
+        if (P == PE->INIP && choice == 'S') {
+          PE->INIP = P->SIG;
+          P->SIG = NULL;
+          delete P;
+          P = PE->INIP;
+        } else if (P != PE->INIP && choice == 'S') {
+          ANT->SIG = P->SIG;
+          P->SIG = NULL;
+          delete P;
+          P = ANT->SIG;
+        } else if (choice == 'N') {
+          ANT = P;
+          i += 1;
+          P = P->SIG;
+        } else {
+          do {
+            cout << "\t\tDebe elegir un valor valido S(Si) N(No): ";
+            cin >> choice;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+          } while (choice != 'S' && choice != 'N');
+        }
+      } while (P && i < cant_perritos + 1);
+
+      break;
+    }
+
+    PE = PE->SIG;
+  }
+}
+
 int main(int argc, char** argv, char** envp) {
   SUCURSAL S;
   int choice, choice1, cantidad, perritos;
@@ -866,6 +932,8 @@ int main(int argc, char** argv, char** envp) {
                << endl;
         }
         break;
+
+      case 8: S.ELIMINAR_PERRITO(); break;
     }
   }
 
