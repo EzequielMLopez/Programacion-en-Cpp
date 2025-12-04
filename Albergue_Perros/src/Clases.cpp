@@ -6,20 +6,20 @@
 using namespace std;
 
 // ========== PERROS ========== //
-PERROS::PERROS(char* nomine) {
+PERROS::PERROS(const string& nomine) {
   edad = 0;
   SIG = NULL;
-  strcpy(nombre, nomine);
+  nombre = nomine;
 };
 
 PERROS::~PERROS() { cout << "Estamos eliminando a " << nombre << endl; };
 
 // ========== PERRERAS ========== //
-PERRERA::PERRERA(char* name) {
+PERRERA::PERRERA(const string& name) {
   altura = 0;
   INIP = NULL;
   SIG = NULL;
-  strcpy(nombre, name);
+  nombre = name;
 };
 
 PERRERA::~PERRERA() {
@@ -103,15 +103,15 @@ void SUCURSAL::REORDENAR(PERRERA* PE, PERROS** PERRITOS, int posicion) {
   }
 }
 
-int SUCURSAL::TOTAL_PERRITOS(char* perre) {
+int SUCURSAL::TOTAL_PERRITOS(const string& perre) {
   PERRERA* PE;
   PERROS* P;
-  int perritos = 0, flag;
+  int perritos = 0, flag = 0;
 
   PE = INICIO;
 
   while (PE) {
-    if (!strcmp(PE->nombre, perre)) {
+    if (PE->nombre == perre) {
       if (PE->INIP == NULL) {
         cout << "\t\tNo hay perritos ingresados en la perrera como para seleccionar.\n"
              << "\t\tSe lo devuelve al menu principal." << endl;
@@ -125,12 +125,17 @@ int SUCURSAL::TOTAL_PERRITOS(char* perre) {
         P = P->SIG;
       }
 
+      flag = 1;
+
       return perritos;
     }
 
-    flag = 2;
     PE = PE->SIG;
   }
 
-  return flag;
+  if (flag == 0) {
+    cout << "\tNo se encontro la perrera especificada." << endl;
+  }
+
+  return 1;
 };

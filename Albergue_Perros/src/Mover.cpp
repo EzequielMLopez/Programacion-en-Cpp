@@ -3,6 +3,7 @@
 #include <random>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 using namespace std;
 
@@ -10,7 +11,8 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
   PERRERA *PE, *AUX;
   PERROS* P;
   int perreras = 0, cantidad = 0, i = 0, pos = 0, j = 0, flag = 0, k = 0, salir = 0;
-  char perrera_from[20], perrera_to[20], choice, perritos;
+  char choice, perritos;
+  string perrera_from, perrera_to;
 
   if (INICIO == NULL) {
     cout << "\tNo existen perreras actualmente ingresadas, favor de crear al "
@@ -38,7 +40,7 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
       MOSTRAR_PERRERAS();
       cout << "\tIngrese el nombre de la perrera desde la cual desea migrar a "
               "los perritos: ";
-      cin.getline(perrera_from, 20);
+      getline(cin, perrera_from);
       perritos = TOTAL_PERRITOS(perrera_from);
       cout << "\t\tLa cantidad de perritos que tiene la perrera es " << perritos << "\n"
            << "\t\tingrese una cantidad menos o igual al total para movilizar> ";
@@ -51,7 +53,7 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
         PE = INICIO;
 
         while (PE) {
-          if (!strcmp(perrera_from, PE->nombre)) {
+          if (PE->nombre == perrera_from) {
             if (PE->INIP == NULL) {
               cout << "\t\tEn la perrera ingresada no existen perros ingresados, no "
                       "se puede migrar algo que no existe.";
@@ -75,7 +77,6 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
             }
 
             AUX = PE;
-
             break;
           }
 
@@ -87,12 +88,12 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
         cout << "\t\tSegun la siguiente lista: " << endl;
         MOSTRAR_PERRERAS();
         cout << "\t\tCual es la perrera de destino?: ";
-        cin.getline(perrera_to, 20);
+        getline(cin, perrera_to);
 
         PE = INICIO;
 
         while (PE) {
-          if (!strcmp(PE->nombre, perrera_to)) {
+          if (PE->nombre == perrera_to) {
             P = PE->INIP;
 
             // Si la perrera esta vacia ingresa al if y agrega a todos los perritos
@@ -121,7 +122,7 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
                 }
               }
 
-            } else {
+            } else { // Si la perrera ya tiene perritos, va al fondo y los empieza a insertar
               while (P->SIG) {
                 P = P->SIG;
               }
@@ -152,13 +153,13 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
       MOSTRAR_PERRERAS();
       cout << "\t\tIngrese el nombre de la perrera desde la que desea migrar a los "
               "perritos: ";
-      cin.getline(perrera_from, 20);
+      getline(cin, perrera_from);
 
       PE = INICIO;
       perritos = TOTAL_PERRITOS(perrera_from);
 
       while (PE) {
-        if (!strcmp(PE->nombre, perrera_from)) {
+        if (PE->nombre == perrera_from) {
           AUX = PE;
           P = PE->INIP;
 
@@ -169,15 +170,14 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
             P = P->SIG;
           }
 
-          flag = 0;
+          flag = 1;
           break;
         }
 
-        flag = 1;
         PE = PE->SIG;
       }
 
-      if (flag == 1) {
+      if (flag == 0) {
         cout << "\tNo se a encontrado la perrera pertinente, se lo devuelve al "
                 "menu principal."
              << endl;
@@ -199,12 +199,12 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
 
       cout << "\tSegun la lista de perreras previamente mostrada, Ingrese la "
               "perrera de destino: ";
-      cin.getline(perrera_to, 20);
+      getline(cin, perrera_to);
 
       PE = INICIO;
 
       while (PE) {
-        if (!strcmp(PE->nombre, perrera_to)) {
+        if (PE->nombre == perrera_to) {
           P = PE->INIP;
 
           // Si la perrera esta vacia ingresa al if y agrega a todos los perritos

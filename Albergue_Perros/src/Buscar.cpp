@@ -6,18 +6,18 @@
 
 using namespace std;
 
-void SUCURSAL::BUSCAR_PERRITO(char* perr) {
+void SUCURSAL::BUSCAR_PERRITO(const string& perr) {
   PERRERA* PE;
   PERROS* P;
-  char perrito[20];
+  string perrito;
 
   PE = INICIO;
 
   cout << "\t\tIngrese el nombre del perrito a buscar: ";
-  cin.getline(perrito, 20);
+  getline(cin, perrito);
 
   while (PE) {
-    if (!strcmp(PE->nombre, perr)) {
+    if (PE->nombre == perr) {
       if (PE->INIP == NULL) {
         cout << "\t\tNo hay perritos dentro de esta perrera, favor de "
                 "ingresar "
@@ -29,7 +29,7 @@ void SUCURSAL::BUSCAR_PERRITO(char* perr) {
       P = PE->INIP;
 
       while (P) {
-        if (!strcmp(P->nombre, perrito)) {
+        if (P->nombre == perrito) {
           cout << "\t\tSe encontro el perrito buscado, sus datos son:\n"
                << "\t\tNombre: " << P->nombre << "\n"
                << "\t\tEdad: " << P->edad << endl;
@@ -45,12 +45,14 @@ void SUCURSAL::BUSCAR_PERRITO(char* perr) {
 
     PE = PE->SIG;
   }
+
+  return;
 }
 
 void SUCURSAL::BUSCAR_PERRITO() {
   PERRERA* PE;
   PERROS* P;
-  char perrito[20];
+  string perrito;
   int flag = 0;
 
   if (INICIO == NULL) {
@@ -61,7 +63,7 @@ void SUCURSAL::BUSCAR_PERRITO() {
   }
 
   cout << "\t\tIngrese el nombre del perrito a buscar: ";
-  cin.getline(perrito, 20);
+  getline(cin, perrito);
 
   PE = INICIO;
 
@@ -74,10 +76,12 @@ void SUCURSAL::BUSCAR_PERRITO() {
       P = PE->INIP;
 
       while (P) {
-        if (!strcmp(P->nombre, perrito)) {
+        if (P->nombre == perrito) {
           cout << "\t\tSe encontro el perrito buscado, sus datos son:\n"
                << "\t\tNombre: " << P->nombre << "\n"
                << "\t\tEdad: " << P->edad << endl;
+
+          flag = 1;
           return;
         }
 
@@ -85,13 +89,11 @@ void SUCURSAL::BUSCAR_PERRITO() {
       }
     }
 
-    flag = 1;
+    PE = PE->SIG;
   }
 
-  if (flag == 1)
-    cout << "\t\tNo se encontro al perro que se estaba buscando en ninguna "
-            "perrera."
-         << endl;
+  if (flag == 0)
+    cout << "\t\tNo se encontro al perro que se estaba buscando en ninguna perrera." << endl;
 
   return;
 }

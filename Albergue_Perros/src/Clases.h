@@ -1,21 +1,25 @@
 #include <stdlib.h>
+#include <string>
+
+using namespace std;
 
 class PERROS {
 public:
-  char nombre[20];
+  string nombre;
   int edad, apuntado = 0;
   PERROS* SIG;
-  PERROS(char*);
+  PERROS(const string&);
   ~PERROS();
 };
 
 class PERRERA {
 public:
-  char nombre[20], pais[20], provincia[20], partido[20], localidad[20], direccion[40];
+  char pais[20], provincia[20], partido[20], localidad[20], direccion[40];
+  string nombre;
   int altura;
   PERROS* INIP;
   PERRERA* SIG;
-  PERRERA(char*);
+  PERRERA(const string&);
   ~PERRERA();
 };
 
@@ -23,19 +27,19 @@ class SUCURSAL {
 private:
   PERRERA* INICIO;
   void REORDENAR(PERRERA*, PERROS**, int);
-  int TOTAL_PERRITOS(char*);
+  int TOTAL_PERRITOS(const string&);
 
 public:
   SUCURSAL();
   ~SUCURSAL();
-  void AGREGAR_PERRERA(char*);
-  void AGREGAR_PERRITO(char*);
+  void AGREGAR_PERRERA(const string&);
+  void AGREGAR_PERRITO(const string&);
   void MOSTRAR_PERRERAS();
-  void MOSTRAR_PERRITOS(char*);
-  void ELIMINAR_PERRERA(char*); // Se elimina una unica perrera
-  void ELIMINAR_PERRERA();      // Sobre carga para eliminar a todas las perreras
+  void MOSTRAR_PERRITOS(const string&);
+  void ELIMINAR_PERRERA(const string&); // Se elimina una unica perrera
+  void ELIMINAR_PERRERA();              // Sobre carga para eliminar a todas las perreras
   void MOVER_PERRITOS(int);
-  void BUSCAR_PERRITO(char*);
+  void BUSCAR_PERRITO(const string&);
   void BUSCAR_PERRITO();
   void ELIMINAR_PERRITO();
   void MODIFICAR_PERRITO();

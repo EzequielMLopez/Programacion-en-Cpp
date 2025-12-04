@@ -31,10 +31,4 @@ exe = executable('Albergue_Perros', src,
   install : true
 )
 
-# Warnings para saber en que estado se encuentra el programa
-default_options : [
-  'warning_level=3',
-  'cpp_args=-Wall -Wextra -Wpedantic'
-]
-
 test('basic', exe)

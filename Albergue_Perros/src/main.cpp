@@ -8,14 +8,46 @@
 
 using namespace std;
 
+string pedirNombrePerrera();
+string nuevaPerrera();
+void listarPerreras(SUCURSAL);
+
+string nuevaPerrera() {
+  string perrera;
+
+  cout << "\tEscoge el nombre de tu perrera: ";
+  getline(std::cin, perrera);
+
+  return perrera;
+};
+
+string pedirNombrePerrera() {
+  string perrera;
+
+  cout << "\tIngrese el nombre de la perrera en donde desea efectuar la accion: ";
+  getline(cin, perrera);
+
+  return perrera;
+}
+
+void listarPerreras(SUCURSAL system) {
+  string perrera;
+
+  cout << "\tSegun el siguiente listado que contamos en nuestra base de datos:" << endl;
+  system.MOSTRAR_PERRERAS();
+
+  return;
+}
+
 int main(int argc, char** argv, char** envp) {
   SUCURSAL S;
   int choice = -1, choice1 = 0;
-  char perrera[20], perrera_elegida[20], know;
+  char perrera_elegida[20], know;
+  string perrera;
 
   cout << "Bienvenido al Albergue de Perros simulado" << endl;
 
-  while (choice) {
+  do {
     cout << "Para facilitar la gestion de este programa usted puede escoger "
             "entre las siguientes opciones:\n"
          << "1- Agregar una perrera nueva\n"
@@ -23,8 +55,7 @@ int main(int argc, char** argv, char** envp) {
          << "3- Mostrar Perreras\n"
          << "4- Mostrar Perritos de una Perrera determinada\n"
          << "5- Eliminar una perrera o todas las perreras (esto incluye la "
-            "perdida de los datos de los "
-            "perritos)\n"
+            "perdida de los datos de los perritos)\n"
          << "6- Mover los datos de algunos u todos los perritos a otra "
             "perrera\n"
          << "7- Buscar un perro especifigo en una perrera concreta o en "
@@ -38,44 +69,30 @@ int main(int argc, char** argv, char** envp) {
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
     switch (choice) {
-      case 1:
-        cout << "\tEscoge un nombre para la nueva perrera: ";
-        cin.getline(perrera, 20);
-        S.AGREGAR_PERRERA(perrera);
-        break;
+      case 1: S.AGREGAR_PERRERA(nuevaPerrera()); break;
 
       case 2:
-        cout << "\tSabe el nombre de la perrera en donde desea ingresar al "
-                "nuevo "
-                "integrante S(Si) N(No): ";
+        cout << "\tSe acuerda del nombre de la perrera en donde desea ingresar al "
+                "nuevo integrante S(Si) N(No): ";
         cin >> know;
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
         if (know == 'S') {
-          cout << "\tColoca por favor el nombre de la perrera a donde esta "
-                  "destinado el nuevo perrito/a: ";
-          cin.getline(perrera, 20);
+          perrera = pedirNombrePerrera();
           S.AGREGAR_PERRITO(perrera);
         } else if (know == 'N') {
-          cout << "\tEste es el listado de las perreras que actualmente tenemos "
-                  "en nuestra base de datos:"
-               << endl;
-          S.MOSTRAR_PERRERAS();
+          listarPerreras(S);
           cout << "\tLa perrera deseada se encuentra entre una de ellas? S(Si) "
                   "N(No): ";
           cin >> know;
           cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
           if (know == 'S') {
-            cout << "\tFavor de indicar el nombre de la misma: ";
-            cin.getline(perrera_elegida, 20);
-            S.AGREGAR_PERRITO(perrera_elegida);
+            perrera = pedirNombrePerrera();
+            S.AGREGAR_PERRITO(perrera);
           } else if (know == 'N') {
-            cout << "\tSiendo que no conoce el nombre de la perrera ni tampoco "
-                    "la "
-                    "supo reconocer en el listado dado, le pedimos que cree la "
-                    "Perrera para poder ingresar a los perritos"
-                 << endl;
+            cout << "\tSiendo que no conoce el nombre de la perrera ni tampoco la supo reconocer en el listado dado, "
+                 << "le pedimos que cree la Perrera para poder ingresar a los perritos" << endl;
           } else {
             cout << "\tNo es un valor valido, se lo devuelve al menu principal.";
           }
@@ -88,10 +105,8 @@ int main(int argc, char** argv, char** envp) {
         break;
 
       case 4:
-        cout << "\t\tSegun la siguiente lista de perreras:" << endl;
-        S.MOSTRAR_PERRERAS();
-        cout << "\t\tEscriba el nombre de la perrera para mostrar sus perritos: ";
-        cin.getline(perrera, 20);
+        listarPerreras(S);
+        perrera = pedirNombrePerrera();
         S.MOSTRAR_PERRITOS(perrera);
         break;
 
@@ -104,17 +119,14 @@ int main(int argc, char** argv, char** envp) {
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
         if (choice1 == 1) {
-          cout << "\tFavor de ingresar el nombre de la Perrera: ";
-          cin.getline(perrera, 20);
+          listarPerreras(S);
+          perrera = pedirNombrePerrera();
           S.ELIMINAR_PERRERA(perrera);
         } else if (choice1 == 2) {
           cout << "\tSe van a eliminar todas las perreras" << endl;
           S.ELIMINAR_PERRERA();
         } else {
-          cout << "\tNo corresponde a ninguna opcion para elegir, se devuelve "
-                  "al "
-                  "menu principal"
-               << endl;
+          cout << "\tNo corresponde a ninguna opcion para elegir, se devuelve al menu principal" << endl;
         }
         break;
 
@@ -142,11 +154,8 @@ int main(int argc, char** argv, char** envp) {
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
         if (choice == 1) {
-          cout << "\tEn funcion de la siguiente lista de perreras:" << endl;
-          S.MOSTRAR_PERRERAS();
-          cout << "\tIndique el nombre de la perrera en la que vamos a buscar "
-                  "al perrito: ";
-          cin.getline(perrera, 20);
+          listarPerreras(S);
+          perrera = pedirNombrePerrera();
           S.BUSCAR_PERRITO(perrera);
         } else if (choice == 2) {
           S.BUSCAR_PERRITO();
@@ -163,7 +172,7 @@ int main(int argc, char** argv, char** envp) {
 
       case 10: S.MODIFICAR_PERRERA(); break;
     }
-  }
+  } while (choice != 0);
 
   return 0;
 }

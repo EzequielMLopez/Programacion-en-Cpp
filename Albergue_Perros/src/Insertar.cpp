@@ -1,12 +1,14 @@
 #include "Clases.h"
+#include <cstdio>
 #include <iostream>
 #include <random>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 using namespace std;
 
-void SUCURSAL::AGREGAR_PERRERA(char* nome) {
+void SUCURSAL::AGREGAR_PERRERA(const string& nome) {
   PERRERA *PE, *nuevo;
 
   // Se crea una nueva perra y se solicita al usuario los datos pertinentes a la
@@ -47,20 +49,20 @@ void SUCURSAL::AGREGAR_PERRERA(char* nome) {
   return;
 }
 
-void SUCURSAL::AGREGAR_PERRITO(char* perre) {
+void SUCURSAL::AGREGAR_PERRITO(const string& perre) {
   PERRERA* P;
   PERROS *PE, *nuevo;
-  char perrito[20];
+  string perrito;
   int flag = 0;
 
   P = INICIO;
 
   while (P) {
-    if (!strcmp(P->nombre, perre)) {
+    if (P->nombre == perre) {
       PE = P->INIP;
 
       cout << "\tIngrese el nombre del nuevo integrante del grupo: ";
-      cin.getline(perrito, 20);
+      getline(cin, perrito);
       nuevo = new PERROS(perrito);
       cout << "\tCual es la edad del perrito/a: ";
       cin >> nuevo->edad;

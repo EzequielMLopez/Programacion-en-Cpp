@@ -7,7 +7,7 @@
 using namespace std;
 
 void SUCURSAL::MOSTRAR_PERRERAS() {
-  PERRERA* P;
+  PERRERA* PE;
 
   if (INICIO == NULL) {
     cout << "\t\tNo hay perreras ingresadas, favor de crear al menos una, "
@@ -15,19 +15,20 @@ void SUCURSAL::MOSTRAR_PERRERAS() {
          << endl;
     return;
   }
-  P = INICIO;
 
-  while (P) {
-    cout << "\t\t" << P->nombre << " - " << P->provincia << " - " << P->partido << " - " << P->direccion << " " << P->altura << endl;
-    P = P->SIG;
+  PE = INICIO;
+
+  while (PE) {
+    cout << "\t\t" << PE->nombre << " - " << PE->provincia << " - " << PE->partido << " - " << PE->direccion << " " << PE->altura << endl;
+    PE = PE->SIG;
   }
 
   return;
 }
 
-void SUCURSAL::MOSTRAR_PERRITOS(char* perr) {
-  PERRERA* P;
-  PERROS* PE;
+void SUCURSAL::MOSTRAR_PERRITOS(const string& perr) {
+  PERRERA* PE;
+  PERROS* P;
   int flag1 = 0;
 
   if (INICIO == NULL) {
@@ -37,29 +38,29 @@ void SUCURSAL::MOSTRAR_PERRITOS(char* perr) {
     return;
   }
 
-  P = INICIO;
+  PE = INICIO;
 
-  while (P) {
-    if (!strcmp(P->nombre, perr)) {
-      if (P->INIP == NULL) {
+  while (PE) {
+    if (PE->nombre == perr) {
+      if (PE->INIP == NULL) {
         cout << "\tEn esta perrera no hay perritos ingresados, favor de "
                 "ingresar uno con la opcion 2 del menu del programa"
              << endl;
         return;
       }
 
-      PE = P->INIP;
+      P = PE->INIP;
 
-      while (PE) {
-        cout << "\t\tNombre: " << PE->nombre << " - Edad: " << PE->edad << endl;
-        PE = PE->SIG;
+      while (P) {
+        cout << "\t\tNombre: " << P->nombre << " - Edad: " << P->edad << endl;
+        P = P->SIG;
       }
 
       flag1 = 1;
       return;
     }
 
-    P = P->SIG;
+    PE = PE->SIG;
   }
 
   if (flag1 == 0) {

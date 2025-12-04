@@ -9,7 +9,8 @@ using namespace std;
 void SUCURSAL::MODIFICAR_PERRITO() {
   PERRERA* PE;
   PERROS* P;
-  char perrera[20], perrito[20], choice;
+  char choice;
+  string perrera, perrito;
   int flag1 = 0, flag2 = 0;
 
   if (INICIO == NULL) {
@@ -20,12 +21,12 @@ void SUCURSAL::MODIFICAR_PERRITO() {
   cout << "\t\tSegun la siguiente lista de perreras:" << endl;
   MOSTRAR_PERRERAS();
   cout << "\t\tCual es la perrera donde se encuentra su perrito: ";
-  cin.getline(perrera, 20);
+  getline(cin, perrera);
 
   PE = INICIO;
 
   while (PE) {
-    if (!strcmp(PE->nombre, perrera)) {
+    if (PE->nombre == perrera) {
       if (PE->INIP == NULL) {
         cout << "\t\tLa perrera no cuenta con ningun perrito, favor de al menos ingresar uno." << endl;
         return;
@@ -34,12 +35,12 @@ void SUCURSAL::MODIFICAR_PERRITO() {
       cout << "\t\tSegun la siguiente lista de perritos ingresados:" << endl;
       MOSTRAR_PERRITOS(perrera);
       cout << "\t\tCual desea modificar: ";
-      cin.getline(perrito, 20);
+      getline(cin, perrito);
 
       P = PE->INIP;
 
       while (P) {
-        if (!strcmp(P->nombre, perrito)) {
+        if (P->nombre == perrito) {
           do {
             cout << "\t\tDesea modificar el nombre? S(Si) N(No): ";
             cin >> choice;
@@ -48,7 +49,7 @@ void SUCURSAL::MODIFICAR_PERRITO() {
 
           if (choice == 'S') {
             cout << "\t\tCual es el nuevo nombre para " << P->nombre << ": ";
-            cin.getline(P->nombre, 20);
+            getline(cin, P->nombre);
           }
 
           do {
@@ -90,7 +91,8 @@ void SUCURSAL::MODIFICAR_PERRITO() {
 
 void SUCURSAL::MODIFICAR_PERRERA() {
   PERRERA* PE;
-  char perrera[20], choice;
+  char choice;
+  string perrera;
   int flag = 0;
 
   if (INICIO == NULL) {
@@ -101,12 +103,12 @@ void SUCURSAL::MODIFICAR_PERRERA() {
   cout << "\t\tEn funcion de las siguientes perreras disponibles:" << endl;
   MOSTRAR_PERRERAS();
   cout << "\t\tIngrese el nombre de la que desea modificar sus datos: ";
-  cin.getline(perrera, 20);
+  getline(cin, perrera);
 
   PE = INICIO;
 
   while (PE) {
-    if (!strcmp(PE->nombre, perrera)) {
+    if (PE->nombre == perrera) {
       do {
         cout << "\t\tDesea modificar el Pais? S(Si) N(No): ";
         cin >> choice;

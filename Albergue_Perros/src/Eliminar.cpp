@@ -6,8 +6,8 @@
 
 using namespace std;
 
-void SUCURSAL::ELIMINAR_PERRERA(char* perre) {
-  PERRERA *P, *AUX;
+void SUCURSAL::ELIMINAR_PERRERA(const string& perre) {
+  PERRERA *PE, *AUX;
   int flag = 0;
 
   if (INICIO == NULL) {
@@ -17,31 +17,31 @@ void SUCURSAL::ELIMINAR_PERRERA(char* perre) {
     return;
   }
 
-  if (!strcmp(INICIO->nombre, perre)) {
+  if (INICIO->nombre == perre) {
     AUX = INICIO;
     INICIO = INICIO->SIG;
     delete AUX;
     return;
   }
 
-  P = INICIO;
+  PE = INICIO;
 
-  while (P) {
-    if (!strcmp(P->nombre, perre)) {
-      AUX->SIG = P->SIG;
-      P->SIG = NULL;
-      delete P;
+  while (PE) {
+    if (PE->nombre == perre) {
+      AUX->SIG = PE->SIG;
+      PE->SIG = NULL;
+      delete PE;
+      flag = 1;
       return;
     } else {
-      flag = 1;
     }
 
-    AUX = P;
+    AUX = PE;
 
-    P = P->SIG;
+    PE = PE->SIG;
   }
 
-  if (flag == 1) {
+  if (flag == 0) {
     cout << "\tNo se hallo la perrera especificada, favor de revisar si el "
             "nombre de la misma esta escrito correctamente."
          << endl;
@@ -51,7 +51,7 @@ void SUCURSAL::ELIMINAR_PERRERA(char* perre) {
 }
 
 void SUCURSAL::ELIMINAR_PERRERA() {
-  PERRERA *P, *AUX;
+  PERRERA *PE, *AUX;
 
   if (INICIO == NULL) {
     cout << "\tNo existe perrera alguna en la base de datos actual, favor de "
@@ -59,11 +59,11 @@ void SUCURSAL::ELIMINAR_PERRERA() {
          << endl;
   }
 
-  P = INICIO;
+  PE = INICIO;
 
-  while (P) {
-    AUX = P;
-    P = P->SIG;
+  while (PE) {
+    AUX = PE;
+    PE = PE->SIG;
     delete AUX;
     AUX = NULL;
   }
@@ -87,7 +87,7 @@ void SUCURSAL::ELIMINAR_PERRITO() {
   PE = INICIO;
 
   while (PE) {
-    if (!strcmp(PE->nombre, perrera)) {
+    if (PE->nombre == perrera) {
       if (PE->INIP == NULL) {
         cout << "\t\tNo hay ningun perro para eliminar.";
         return;
