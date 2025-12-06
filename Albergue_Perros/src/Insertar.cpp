@@ -3,7 +3,6 @@
 #include <iostream>
 #include <random>
 #include <stdlib.h>
-#include <string.h>
 #include <string>
 
 using namespace std;
@@ -16,15 +15,15 @@ void SUCURSAL::AGREGAR_PERRERA(const string& nome) {
   nuevo = new PERRERA(nome);
 
   cout << "\tPor favor, ingrese el pais donde se encuentra la perrera: ";
-  cin.getline(nuevo->pais, 20);
+  getline(cin, nuevo->pais);
   cout << "\tAhora la provincia: ";
-  cin.getline(nuevo->provincia, 20);
+  getline(cin, nuevo->provincia);
   cout << "\tPartido: ";
-  cin.getline(nuevo->partido, 20);
+  getline(cin, nuevo->partido);
   cout << "\tLocalidad: ";
-  cin.getline(nuevo->localidad, 20);
+  getline(cin, nuevo->localidad);
   cout << "\tDireccion: ";
-  cin.getline(nuevo->direccion, 40);
+  getline(cin, nuevo->direccion);
   cout << "\tAltura: ";
   cin >> nuevo->altura;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');

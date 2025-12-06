@@ -10,8 +10,8 @@ using namespace std;
 void SUCURSAL::MOVER_PERRITOS(int choi) {
   PERRERA *PE, *AUX;
   PERROS* P;
-  int perreras = 0, cantidad = 0, i = 0, pos = 0, j = 0, flag = 0, k = 0, salir = 0;
-  char choice, perritos;
+  int perreras = 0, cantidad = 0, i = 0, pos = 0, j = 0, flag = 0, k = 0, salir = 0, perritos = 0;
+  char choice;
   string perrera_from, perrera_to;
 
   if (INICIO == NULL) {
