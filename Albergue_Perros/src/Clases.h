@@ -1,3 +1,6 @@
+#ifndef CLASES_H
+#define CLASES_H
+
 #include <stdlib.h>
 #include <string>
 
@@ -45,3 +48,5 @@ public:
   void MODIFICAR_PERRITO();
   void MODIFICAR_PERRERA();
 };
+
+#endif

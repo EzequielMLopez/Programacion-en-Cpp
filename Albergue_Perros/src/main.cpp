@@ -1,4 +1,5 @@
 #include "Clases.h"
+#include "Funciones_Main.h"
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -7,37 +8,6 @@
 #include <string>
 
 using namespace std;
-
-string pedirNombrePerrera();
-string nuevaPerrera();
-void listarPerreras(SUCURSAL);
-
-string nuevaPerrera() {
-  string perrera;
-
-  cout << "\tEscoge el nombre de tu perrera: ";
-  getline(std::cin, perrera);
-
-  return perrera;
-};
-
-string pedirNombrePerrera() {
-  string perrera;
-
-  cout << "\tIngrese el nombre de la perrera en donde desea efectuar la accion: ";
-  getline(cin, perrera);
-
-  return perrera;
-}
-
-void listarPerreras(SUCURSAL system) {
-  string perrera;
-
-  cout << "\tSegun el siguiente listado que contamos en nuestra base de datos:" << endl;
-  system.MOSTRAR_PERRERAS();
-
-  return;
-}
 
 int main(int argc, char** argv, char** envp) {
   SUCURSAL S;
@@ -99,10 +69,7 @@ int main(int argc, char** argv, char** envp) {
         }
         break;
 
-      case 3:
-        cout << "\tLas perreras con las que contamos son:" << endl;
-        S.MOSTRAR_PERRERAS();
-        break;
+      case 3: listarPerreras(S); break;
 
       case 4:
         listarPerreras(S);

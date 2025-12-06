@@ -15,6 +15,7 @@ src = files (
   join_paths(src_dir, 'Modificar.cpp'),
   join_paths(src_dir, 'Mostrar.cpp'),
   join_paths(src_dir, 'Mover.cpp'),
+  join_paths(src_dir, 'Funciones_Main.cpp'),
 )
 
 # Primero definimos la dependencia de gtkmm 4
