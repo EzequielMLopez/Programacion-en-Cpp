@@ -3,6 +3,7 @@
 #include <random>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 using namespace std;
 
@@ -117,7 +118,7 @@ void SUCURSAL::MODIFICAR_PERRERA() {
 
       if (choice == 'S') {
         cout << "\t\tIngrese el nuevo Pais: ";
-        cin.getline(PE->pais, 20);
+        getline(cin, PE->pais);
       }
 
       do {
@@ -128,7 +129,7 @@ void SUCURSAL::MODIFICAR_PERRERA() {
 
       if (choice == 'S') {
         cout << "\t\tIngrese la nueva Provincia: ";
-        cin.getline(PE->provincia, 20);
+        getline(cin, PE->provincia);
       }
 
       do {
@@ -139,7 +140,7 @@ void SUCURSAL::MODIFICAR_PERRERA() {
 
       if (choice == 'S') {
         cout << "\t\tIngrese el nuevo Partido: ";
-        cin.getline(PE->partido, 40);
+        getline(cin, PE->partido);
       }
 
       do {
@@ -150,7 +151,7 @@ void SUCURSAL::MODIFICAR_PERRERA() {
 
       if (choice == 'S') {
         cout << "\t\tIngrese la nueva Localidad: ";
-        cin.getline(PE->localidad, 20);
+        getline(cin, PE->localidad);
       }
 
       do {
@@ -161,7 +162,7 @@ void SUCURSAL::MODIFICAR_PERRERA() {
 
       if (choice == 'S') {
         cout << "\t\tIngrese la nueva Direccion: ";
-        cin.getline(PE->direccion, 20);
+        getline(cin, PE->direccion);
       }
 
       do {
