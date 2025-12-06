@@ -3,6 +3,7 @@
 #include <random>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 using namespace std;
 
@@ -76,13 +77,14 @@ void SUCURSAL::ELIMINAR_PERRERA() {
 void SUCURSAL::ELIMINAR_PERRITO() {
   PERRERA* PE;
   PERROS *P, *ANT;
-  char perrera[20], choice;
+  char choice;
+  string perrera;
   int i = 1, cant_perritos = 0;
 
   cout << "\t\tEn funcion de la siguiente lista:" << endl;
   MOSTRAR_PERRERAS();
   cout << "\t\tColoque el nombre de la perrera donde esta el perrito a eliminar: ";
-  cin.getline(perrera, 20);
+  getline(cin, perrera);
 
   PE = INICIO;
 
