@@ -17,8 +17,7 @@ public:
 
 class PERRERA {
 public:
-  char pais[20], provincia[20], partido[20], localidad[20], direccion[40];
-  string nombre;
+  string nombre, pais, provincia, partido, localidad, direccion;
   int altura;
   PERROS* INIP;
   PERRERA* SIG;
