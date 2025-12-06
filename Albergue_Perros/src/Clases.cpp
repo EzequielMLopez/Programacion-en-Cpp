@@ -56,7 +56,7 @@ SUCURSAL::~SUCURSAL() {
 }
 
 // ========== METODOS PRIVADOS DE SUCURSAL ========== //
-void SUCURSAL::REORDENAR(PERRERA* PE, PERROS** PERRITOS, int posicion) {
+void SUCURSAL::REORDENAR(PERRERA* PE, vector<PERROS*>& PERRITOS, int posicion) {
   PERROS *P, *AUX, *ANTERIOR;
   int i = 0, j = 0;
 

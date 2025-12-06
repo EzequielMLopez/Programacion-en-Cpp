@@ -48,7 +48,8 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
       cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
       if (cantidad <= perritos and cantidad > 0) {
-        PERROS* PER[cantidad];
+        vector<PERROS*> PER;
+        PER.reserve(cantidad);
 
         PE = INICIO;
 
@@ -69,8 +70,7 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
               cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
               if (choice == 'S' and pos < cantidad) {
-                PER[pos] = P;
-                pos += 1;
+                PER.push_back(P);
               }
 
               P = P->SIG;
@@ -184,14 +184,14 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
         return;
       }
 
-      PERROS* PER[cantidad];
+      vector<PERROS*> PER;
+      PER.reserve(cantidad);
       P = AUX->INIP;
 
       i = 0;
 
       while (P) {
-        PER[i] = P;
-        i += 1;
+        PER.push_back(P);
         P = P->SIG;
       }
 

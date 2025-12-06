@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ public:
 class SUCURSAL {
 private:
   PERRERA* INICIO;
-  void REORDENAR(PERRERA*, PERROS**, int);
+  void REORDENAR(PERRERA*, vector<PERROS*>&, int);
   int TOTAL_PERRITOS(const string&);
 
 public:
