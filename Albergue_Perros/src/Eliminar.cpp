@@ -105,9 +105,11 @@ void SUCURSAL::ELIMINAR_PERRITO() {
       P = PE->INIP;
 
       do {
-        cout << "\t\t" << i << " es " << P->nombre << " desea eliminarlo S(Si) N(No): ";
-        cin >> choice;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+        do {
+          cout << "\t\t" << i << " es " << P->nombre << " desea eliminarlo S(Si) N(No): ";
+          cin >> choice;
+          cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
+        } while (choice != 'S' && choice != 'N');
 
         if (P == PE->INIP && choice == 'S') {
           PE->INIP = P->SIG;
@@ -123,13 +125,8 @@ void SUCURSAL::ELIMINAR_PERRITO() {
           ANT = P;
           i += 1;
           P = P->SIG;
-        } else {
-          do {
-            cout << "\t\tDebe elegir un valor valido S(Si) N(No): ";
-            cin >> choice;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
-          } while (choice != 'S' && choice != 'N');
         }
+
       } while (P && i < cant_perritos + 1);
 
       break;
