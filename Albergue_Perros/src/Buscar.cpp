@@ -37,7 +37,7 @@ void SUCURSAL::BUSCAR_PERRITO(const string& perr) {
                << "\t\tNombre: " << P->getNombre() << "\n"
                << "\t\tEdad: " << P->getEdad() << endl;
 
-          return;
+          break;
         }
 
         P = P->getSIG();
