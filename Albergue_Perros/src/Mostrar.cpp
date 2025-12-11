@@ -19,8 +19,9 @@ void SUCURSAL::MOSTRAR_PERRERAS() {
   PE = INICIO;
 
   while (PE) {
-    cout << "\t\t" << PE->nombre << " - " << PE->provincia << " - " << PE->partido << " - " << PE->direccion << " " << PE->altura << endl;
-    PE = PE->SIG;
+    cout << "\t\t" << PE->getNombre() << " - " << PE->getProvincia() << " - " << PE->getPartido() << " - " << PE->getDireccion() << " "
+         << PE->getAltura() << endl;
+    PE = PE->getSIG();
   }
 
   return;
@@ -41,26 +42,27 @@ void SUCURSAL::MOSTRAR_PERRITOS(const string& perr) {
   PE = INICIO;
 
   while (PE) {
-    if (PE->nombre == perr) {
-      if (PE->INIP == NULL) {
+    if (PE->getNombre() == perr) {
+      if (PE->getINIP() == NULL) {
         cout << "\tEn esta perrera no hay perritos ingresados, favor de "
                 "ingresar uno con la opcion 2 del menu del programa"
              << endl;
+        flag1 = 1;
         return;
       }
 
-      P = PE->INIP;
+      P = PE->getINIP();
 
       while (P) {
-        cout << "\t\tNombre: " << P->nombre << " - Edad: " << P->edad << endl;
-        P = P->SIG;
+        cout << "\t\tNombre: " << P->getNombre() << " - Edad: " << P->getEdad() << endl;
+        P = P->getSIG();
       }
 
       flag1 = 1;
       return;
     }
 
-    PE = PE->SIG;
+    PE = PE->getSIG();
   }
 
   if (flag1 == 0) {

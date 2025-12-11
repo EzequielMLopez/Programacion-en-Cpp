@@ -9,24 +9,37 @@ using namespace std;
 
 void SUCURSAL::AGREGAR_PERRERA(const string& nome) {
   PERRERA *PE, *nuevo;
+  string pais, provincia, partido, localidad, direccion;
+  int altura = 0;
 
   // Se crea una nueva perra y se solicita al usuario los datos pertinentes a la
   // misma.
   nuevo = new PERRERA(nome);
 
   cout << "\tPor favor, ingrese el pais donde se encuentra la perrera: ";
-  getline(cin, nuevo->pais);
+  getline(cin, pais);
+  nuevo->setPais(pais);
+
   cout << "\tAhora la provincia: ";
-  getline(cin, nuevo->provincia);
+  getline(cin, provincia);
+  nuevo->setProvincia(provincia);
+
   cout << "\tPartido: ";
-  getline(cin, nuevo->partido);
+  getline(cin, partido);
+  nuevo->setPartido(partido);
+
   cout << "\tLocalidad: ";
-  getline(cin, nuevo->localidad);
+  getline(cin, localidad);
+  nuevo->setLocalidad(localidad);
+
   cout << "\tDireccion: ";
-  getline(cin, nuevo->direccion);
+  getline(cin, direccion);
+  nuevo->setDireccion(direccion);
+
   cout << "\tAltura: ";
-  cin >> nuevo->altura;
+  cin >> altura;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  nuevo->setAltura(altura);
 
   // Condicion en caso de que la lista de sucursales/perreras este vacia.
   if (INICIO == NULL) {
@@ -39,49 +52,51 @@ void SUCURSAL::AGREGAR_PERRERA(const string& nome) {
 
   // Se recorre la lista hasta la ultima posicion agregando la nueva perrera al
   // final.
-  while (PE->SIG) {
-    PE = PE->SIG;
+  while (PE->getSIG()) {
+    PE = PE->getSIG();
   }
 
-  PE->SIG = nuevo;
+  PE->setSIG(nuevo);
 
   return;
 }
 
 void SUCURSAL::AGREGAR_PERRITO(const string& perre) {
-  PERRERA* P;
-  PERROS *PE, *nuevo;
+  PERRERA* PE;
+  PERROS *P, *nuevo;
   string perrito;
-  int flag = 0;
+  int flag = 0, edad = 0;
 
-  P = INICIO;
+  PE = INICIO;
 
-  while (P) {
-    if (P->nombre == perre) {
-      PE = P->INIP;
+  while (PE) {
+    if (PE->getNombre() == perre) {
+      P = PE->getINIP();
 
       cout << "\tIngrese el nombre del nuevo integrante del grupo: ";
       getline(cin, perrito);
       nuevo = new PERROS(perrito);
       cout << "\tCual es la edad del perrito/a: ";
-      cin >> nuevo->edad;
+      cin >> edad;
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      nuevo->setEdad(edad);
 
-      if (P->INIP == NULL) {
-        P->INIP = nuevo;
+      if (PE->getINIP() == NULL) {
+        PE->setINIP(nuevo);
         return;
       }
 
-      while (PE->SIG) {
-        PE = PE->SIG;
+      while (P->getSIG()) {
+        P = P->getSIG();
       }
-      PE->SIG = nuevo;
+      P->setSIG(nuevo);
 
       break;
     } else {
       flag = 1;
     }
 
-    P = P->SIG;
+    PE = PE->getSIG();
   }
 
   if (flag == 1) {

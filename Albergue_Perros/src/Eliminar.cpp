@@ -18,28 +18,27 @@ void SUCURSAL::ELIMINAR_PERRERA(const string& perre) {
     return;
   }
 
-  if (INICIO->nombre == perre) {
+  if (INICIO->getNombre() == perre) {
     AUX = INICIO;
-    INICIO = INICIO->SIG;
+    INICIO = INICIO->getSIG();
     delete AUX;
     return;
   }
 
   PE = INICIO;
+  AUX = nullptr;
 
   while (PE) {
-    if (PE->nombre == perre) {
-      AUX->SIG = PE->SIG;
-      PE->SIG = NULL;
+    if (PE->getNombre() == perre) {
+      AUX->setSIG(PE->getSIG());
+      PE->setSIG(NULL);
       delete PE;
       flag = 1;
-      return;
-    } else {
     }
 
     AUX = PE;
 
-    PE = PE->SIG;
+    PE = PE->getSIG();
   }
 
   if (flag == 0) {
@@ -64,7 +63,7 @@ void SUCURSAL::ELIMINAR_PERRERA() {
 
   while (PE) {
     AUX = PE;
-    PE = PE->SIG;
+    PE = PE->getSIG();
     delete AUX;
     AUX = NULL;
   }
@@ -79,7 +78,7 @@ void SUCURSAL::ELIMINAR_PERRITO() {
   PERROS *P, *ANT;
   char choice;
   string perrera;
-  int i = 1, cant_perritos = 0;
+  int i = 1, cant_perritos = 0, flag = 0;
 
   cout << "\t\tEn funcion de la siguiente lista:" << endl;
   MOSTRAR_PERRERAS();
@@ -89,51 +88,56 @@ void SUCURSAL::ELIMINAR_PERRITO() {
   PE = INICIO;
 
   while (PE) {
-    if (PE->nombre == perrera) {
-      if (PE->INIP == NULL) {
+    if (PE->getNombre() == perrera) {
+      if (PE->getINIP() == NULL) {
         cout << "\t\tNo hay ningun perro para eliminar.";
         return;
       }
 
-      P = PE->INIP;
+      P = PE->getINIP();
 
       while (P) {
-        P = P->SIG;
+        P = P->getSIG();
         cant_perritos += 1;
       }
 
-      P = PE->INIP;
+      P = PE->getINIP();
 
       do {
         do {
-          cout << "\t\t" << i << " es " << P->nombre << " desea eliminarlo S(Si) N(No): ";
+          cout << "\t\t" << i << " es " << P->getNombre() << " desea eliminarlo S(Si) N(No): ";
           cin >> choice;
           cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
         } while (choice != 'S' && choice != 'N');
 
-        if (P == PE->INIP && choice == 'S') {
-          PE->INIP = P->SIG;
-          P->SIG = NULL;
+        if (P == PE->getINIP() && choice == 'S') {
+          PE->setINIP(P->getSIG());
+          P->setSIG(NULL);
           delete P;
-          P = PE->INIP;
-        } else if (P != PE->INIP && choice == 'S') {
-          ANT->SIG = P->SIG;
-          P->SIG = NULL;
+          P = PE->getINIP();
+          ANT = nullptr;
+        } else if (P != PE->getINIP() && choice == 'S') {
+          ANT->setSIG(P->getSIG());
+          P->setSIG(NULL);
           delete P;
-          P = ANT->SIG;
+          P = ANT->getSIG();
         } else if (choice == 'N') {
           ANT = P;
           i += 1;
-          P = P->SIG;
+          P = P->getSIG();
         }
 
       } while (P && i < cant_perritos + 1);
 
+      flag = 1;
       break;
     }
 
-    PE = PE->SIG;
+    PE = PE->getSIG();
   }
+
+  if (flag == 0)
+    cout << "\t\tLa perrera ingresada no existe. Se lo retorna al Menu Principal." << endl;
 
   return;
 }

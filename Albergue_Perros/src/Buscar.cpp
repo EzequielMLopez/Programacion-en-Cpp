@@ -10,6 +10,7 @@ void SUCURSAL::BUSCAR_PERRITO(const string& perr) {
   PERRERA* PE;
   PERROS* P;
   string perrito;
+  int flag0 = 0, flag1 = 0;
 
   PE = INICIO;
 
@@ -17,34 +18,42 @@ void SUCURSAL::BUSCAR_PERRITO(const string& perr) {
   getline(cin, perrito);
 
   while (PE) {
-    if (PE->nombre == perr) {
-      if (PE->INIP == NULL) {
+    if (PE->getNombre() == perr) {
+      flag0 = 1;
+
+      if (PE->getINIP() == NULL) {
         cout << "\t\tNo hay perritos dentro de esta perrera, favor de "
-                "ingresar "
-                "al menos uno con otra opcion del menu principal"
+                "ingresar al menos uno con otra opcion del menu principal"
              << endl;
         return;
       }
 
-      P = PE->INIP;
+      P = PE->getINIP();
 
       while (P) {
-        if (P->nombre == perrito) {
+        if (P->getNombre() == perrito) {
+          flag1 = 1;
           cout << "\t\tSe encontro el perrito buscado, sus datos son:\n"
-               << "\t\tNombre: " << P->nombre << "\n"
-               << "\t\tEdad: " << P->edad << endl;
-          return;
-        } else {
-          cout << "\t\tNo se encontro al perrito que estaba buscando :(" << endl;
+               << "\t\tNombre: " << P->getNombre() << "\n"
+               << "\t\tEdad: " << P->getEdad() << endl;
+
           return;
         }
 
-        P = P->SIG;
+        P = P->getSIG();
       }
+
+      break;
     }
 
-    PE = PE->SIG;
+    PE = PE->getSIG();
   }
+
+  if (flag0 == 1 && flag1 == 0)
+    cout << "\t\tSe encontro la perrera solicitada pero no se corrio la misma suerte con el perrito." << endl;
+
+  if (flag0 == 0)
+    cout << "\t\tNo se encontro la perrera solicitada." << endl;
 
   return;
 }
@@ -68,28 +77,28 @@ void SUCURSAL::BUSCAR_PERRITO() {
   PE = INICIO;
 
   while (PE) {
-    if (PE->INIP == NULL) {
-      PE = PE->SIG;
+    if (PE->getINIP() == NULL) {
+      PE = PE->getSIG();
       continue;
     } else {
 
-      P = PE->INIP;
+      P = PE->getINIP();
 
       while (P) {
-        if (P->nombre == perrito) {
+        if (P->getNombre() == perrito) {
           cout << "\t\tSe encontro el perrito buscado, sus datos son:\n"
-               << "\t\tNombre: " << P->nombre << "\n"
-               << "\t\tEdad: " << P->edad << endl;
+               << "\t\tNombre: " << P->getNombre() << "\n"
+               << "\t\tEdad: " << P->getEdad() << endl;
 
           flag = 1;
           return;
         }
 
-        P = P->SIG;
+        P = P->getSIG();
       }
     }
 
-    PE = PE->SIG;
+    PE = PE->getSIG();
   }
 
   if (flag == 0)

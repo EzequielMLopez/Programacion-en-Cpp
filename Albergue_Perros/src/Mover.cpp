@@ -13,6 +13,7 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
   int perreras = 0, cantidad = 0, i = 0, pos = 0, j = 0, flag = 0, k = 0, salir = 0, perritos = 0;
   char choice;
   string perrera_from, perrera_to;
+  bool existe = false;
 
   if (INICIO == NULL) {
     cout << "\tNo existen perreras actualmente ingresadas, favor de crear al "
@@ -29,7 +30,7 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
       break;
     }
 
-    PE = PE->SIG;
+    PE = PE->getSIG();
   }
 
   if (perreras >= 2) {
@@ -47,40 +48,47 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
       cin >> cantidad;
       cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
-      if (cantidad <= perritos and cantidad > 0) {
+      if (cantidad <= perritos && cantidad > 0) {
         vector<PERROS*> PER;
         PER.reserve(cantidad);
 
         PE = INICIO;
 
         while (PE) {
-          if (PE->nombre == perrera_from) {
-            if (PE->INIP == NULL) {
+          if (PE->getNombre() == perrera_from) {
+            existe = true;
+
+            if (PE->getINIP() == NULL) {
               cout << "\t\tEn la perrera ingresada no existen perros ingresados, no "
                       "se puede migrar algo que no existe.";
               return;
             }
 
-            P = PE->INIP;
+            P = PE->getINIP();
 
             while (P) {
-              cout << "\t\tEl perrito actual es: " << P->nombre << " de edad " << P->edad << endl;
+              cout << "\t\tEl perrito actual es: " << P->getNombre() << " de edad " << P->getEdad() << endl;
               cout << "\t\tDesea mover este perrito? S(Si) N(No): ";
               cin >> choice;
               cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer
 
-              if (choice == 'S' and pos < cantidad) {
+              if (choice == 'S' && PER.size() < cantidad) {
                 PER.push_back(P);
               }
 
-              P = P->SIG;
+              P = P->getSIG();
             }
 
             AUX = PE;
             break;
           }
 
-          PE = PE->SIG;
+          PE = PE->getSIG();
+        }
+
+        if (!existe) {
+          cout << "\t\La perrera ingresada no existe. Regresando al Menu Principal." << endl;
+          return;
         }
 
         REORDENAR(AUX, PER, cantidad);
@@ -93,14 +101,16 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
         PE = INICIO;
 
         while (PE) {
-          if (PE->nombre == perrera_to) {
-            P = PE->INIP;
+          if (PE->getNombre() == perrera_to) {
+            P = PE->getINIP();
+
+            k = 0;
 
             // Si la perrera esta vacia ingresa al if y agrega a todos los perritos
             if (!P) {
               do {
-                if (PER[k]->apuntado == 1) {
-                  PE->INIP = PER[k];
+                if (PER[k]->getApuntado()) {
+                  PE->setINIP(PER[k]);
                   P = PER[k];
                   salir = 1;
                 } else {
@@ -114,137 +124,133 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
               }
 
               for (j = k; j < cantidad; j++) {
-                if (PER[j]->apuntado == 1) {
-                  P->SIG = PER[j];
-                  P = P->SIG;
-                } else if (PER[j]->apuntado == 0) {
+                if (PER[j]->getApuntado()) {
+                  P->setSIG(PER[j]);
+                  P = P->getSIG();
+                } else {
                   continue;
                 }
               }
 
             } else { // Si la perrera ya tiene perritos, va al fondo y los empieza a insertar
-              while (P->SIG) {
-                P = P->SIG;
+              while (P->getSIG()) {
+                P = P->getSIG();
               }
 
               for (i = 0; i < cantidad; i++) {
-                if (PER[i]->apuntado == 1) {
-                  P->SIG = PER[i];
-                  P = P->SIG;
-                } else if (PER[i]->apuntado == 0) {
+                if (PER[i]->getApuntado()) {
+                  P->setSIG(PER[i]);
+                  P = P->getSIG();
+                } else
                   continue;
-                }
               }
             }
 
             break;
           }
-
-          PE = PE->SIG;
+          PE = PE->getSIG();
         }
-
-      } else {
-        cout << "\t\tLa cantidad escogida no es un valor valido. Se lo devuelve al menu principal." << endl;
-        return;
       }
 
-    } else if (choi == 2) {
-      cout << "\t\tEn funcion de la siguiente lista de perreras:" << endl;
-      MOSTRAR_PERRERAS();
-      cout << "\t\tIngrese el nombre de la perrera desde la que desea migrar a los "
-              "perritos: ";
-      getline(cin, perrera_from);
+    } else {
+      cout << "\t\tLa cantidad escogida no es un valor valido. Se lo devuelve al menu principal." << endl;
+      return;
+    }
 
-      PE = INICIO;
-      perritos = TOTAL_PERRITOS(perrera_from);
+  } else if (choi == 2) {
+    cout << "\t\tEn funcion de la siguiente lista de perreras:" << endl;
+    MOSTRAR_PERRERAS();
+    cout << "\t\tIngrese el nombre de la perrera desde la que desea migrar a los "
+            "perritos: ";
+    getline(cin, perrera_from);
 
-      while (PE) {
-        if (PE->nombre == perrera_from) {
-          AUX = PE;
-          P = PE->INIP;
+    PE = INICIO;
+    perritos = TOTAL_PERRITOS(perrera_from);
 
-          cantidad = 0;
+    while (PE) {
+      if (PE->getNombre() == perrera_from) {
+        AUX = PE;
+        P = PE->getINIP();
 
-          while (P) {
-            cantidad += 1;
-            P = P->SIG;
+        cantidad = 0;
+
+        while (P) {
+          cantidad += 1;
+          P = P->getSIG();
+        }
+
+        flag = 1;
+        break;
+      }
+
+      PE = PE->getSIG();
+    }
+
+    if (flag == 0) {
+      cout << "\tNo se a encontrado la perrera pertinente, se lo devuelve al "
+              "menu principal."
+           << endl;
+      return;
+    }
+
+    vector<PERROS*> PER;
+    PER.reserve(cantidad);
+    P = AUX->getINIP();
+
+    i = 0;
+
+    while (P) {
+      PER.push_back(P);
+      P = P->getSIG();
+    }
+
+    REORDENAR(AUX, PER, cantidad);
+
+    cout << "\tSegun la lista de perreras previamente mostrada, Ingrese la "
+            "perrera de destino: ";
+    getline(cin, perrera_to);
+
+    PE = INICIO;
+
+    while (PE) {
+      if (PE->getNombre() == perrera_to) {
+        P = PE->getINIP();
+
+        // Si la perrera esta vacia ingresa al if y agrega a todos los perritos
+        if (!P) {
+          if (PER[0]->getApuntado()) {
+            PE->setINIP(PER[0]);
+            P = PER[0];
+          } else {
+            cout << "\t\tNo hay perros para colocar en la perrera de destino, la proxima vez piense lo que hace.";
+            return;
           }
 
-          flag = 1;
-          break;
-        }
-
-        PE = PE->SIG;
-      }
-
-      if (flag == 0) {
-        cout << "\tNo se a encontrado la perrera pertinente, se lo devuelve al "
-                "menu principal."
-             << endl;
-        return;
-      }
-
-      vector<PERROS*> PER;
-      PER.reserve(cantidad);
-      P = AUX->INIP;
-
-      i = 0;
-
-      while (P) {
-        PER.push_back(P);
-        P = P->SIG;
-      }
-
-      REORDENAR(AUX, PER, cantidad);
-
-      cout << "\tSegun la lista de perreras previamente mostrada, Ingrese la "
-              "perrera de destino: ";
-      getline(cin, perrera_to);
-
-      PE = INICIO;
-
-      while (PE) {
-        if (PE->nombre == perrera_to) {
-          P = PE->INIP;
-
-          // Si la perrera esta vacia ingresa al if y agrega a todos los perritos
-          if (!P) {
-            if (PER[0]->apuntado == 1) {
-              PE->INIP = PER[0];
-              P = PER[0];
-            } else {
-              cout << "\t\tNo hay perros para colocar en la perrera de destino, la proxima vez piense lo que hace.";
-              return;
-            }
-
-            for (j = 1; j < cantidad; j++) {
-              if (PER[j]->apuntado == 1) {
-                P->SIG = PER[j];
-                P = P->SIG;
-              } else {
-                continue;
-              }
-            }
-          } else { // Si la perrera ya cuenta con perrito, entonces ingresa al else y agrega al final.
-            while (P->SIG) {
-              P = P->SIG;
-            }
-
-            for (j = 0; j < cantidad; j++) {
-              if (PER[j]->apuntado == 1) {
-                P->SIG = PER[j];
-                P = P->SIG;
-              } else {
-                continue;
-              }
-            }
+          for (j = 1; j < cantidad; j++) {
+            if (PER[j]->getApuntado()) {
+              P->setSIG(PER[j]);
+              P = P->getSIG();
+            } else
+              continue;
+          }
+        } else { // Si la perrera ya cuenta con perrito, entonces ingresa al else y agrega al final.
+          while (P->getSIG()) {
+            P = P->getSIG();
           }
 
-          break;
+          for (j = 0; j < cantidad; j++) {
+            if (PER[j]->getApuntado()) {
+              P->setSIG(PER[j]);
+              P = P->getSIG();
+            } else
+              continue;
+          }
         }
 
-        PE = PE->SIG;
+        break;
       }
+
+      PE = PE->getSIG();
     }
   } else {
     cout << "\t\tEs imposible dado que en el actual escenario no hay por lo menos dos perreras creadas. Favor de crear al menos dos\n"

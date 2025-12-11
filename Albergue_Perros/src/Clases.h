@@ -8,20 +8,64 @@
 using namespace std;
 
 class PERROS {
-public:
+private:
   string nombre;
-  int edad, apuntado = 0;
+  int edad;
+  bool apuntado;
   PERROS* SIG;
+
+public:
+  void setNombre(const string& nomine);
+  string getNombre() const;
+
+  void setEdad(int ed);
+  int getEdad() const;
+
+  void setApuntado(bool v);
+  bool getApuntado() const;
+
+  void setSIG(PERROS* p);
+  PERROS* getSIG() const;
+
   PERROS(const string&);
   ~PERROS();
 };
 
 class PERRERA {
-public:
+private:
   string nombre, pais, provincia, partido, localidad, direccion;
   int altura;
   PERROS* INIP;
   PERRERA* SIG;
+
+public:
+  void setNombre(const string& nomine);
+  string getNombre() const;
+
+  void setPais(const string& pais);
+  string getPais() const;
+
+  void setProvincia(const string& provincia);
+  string getProvincia() const;
+
+  void setPartido(const string& partido);
+  string getPartido() const;
+
+  void setLocalidad(const string& localidad);
+  string getLocalidad() const;
+
+  void setDireccion(const string& direccion);
+  string getDireccion() const;
+
+  void setAltura(int alt);
+  int getAltura() const;
+
+  void setINIP(PERROS* p);
+  PERROS* getINIP() const;
+
+  void setSIG(PERRERA* pe);
+  PERRERA* getSIG() const;
+
   PERRERA(const string&);
   ~PERRERA();
 };
