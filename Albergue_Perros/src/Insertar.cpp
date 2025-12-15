@@ -6,7 +6,7 @@
 #include <string>
 
 using namespace std;
-
+/*
 void SUCURSAL::AGREGAR_PERRERA(const string& nome) {
   PERRERA *PE, *nuevo;
   string pais, provincia, partido, localidad, direccion;
@@ -60,6 +60,7 @@ void SUCURSAL::AGREGAR_PERRERA(const string& nome) {
 
   return;
 }
+*/
 
 void SUCURSAL::AGREGAR_PERRITO(const string& perre) {
   PERRERA* PE;
@@ -104,6 +105,52 @@ void SUCURSAL::AGREGAR_PERRITO(const string& perre) {
             "pedimos que la cree para poder ingresar perritos en la misma."
          << endl;
   }
+
+  return;
+}
+
+void SUCURSAL::AGREGAR_PERRERA_GUI(const string& nombre, const string& pais, const string& provincia, const string& partido, const string& localidad,
+                                   const string& direccion, const int altura) {
+  PERRERA *PE, *nuevo;
+
+  // Se crea una nueva perra y se solicita al usuario los datos pertinentes a la
+  // misma.
+  nuevo = new PERRERA(nombre);
+
+  cout << "\tPor favor, ingrese el pais donde se encuentra la perrera: ";
+  nuevo->setPais(pais);
+
+  cout << "\tAhora la provincia: ";
+  nuevo->setProvincia(provincia);
+
+  cout << "\tPartido: ";
+  nuevo->setPartido(partido);
+
+  cout << "\tLocalidad: ";
+  nuevo->setLocalidad(localidad);
+
+  cout << "\tDireccion: ";
+  nuevo->setDireccion(direccion);
+
+  cout << "\tAltura: ";
+  nuevo->setAltura(altura);
+
+  // Condicion en caso de que la lista de sucursales/perreras este vacia.
+  if (INICIO == NULL) {
+    INICIO = nuevo;
+    return;
+  }
+
+  // Se inicializa el puntero
+  PE = INICIO;
+
+  // Se recorre la lista hasta la ultima posicion agregando la nueva perrera al
+  // final.
+  while (PE->getSIG()) {
+    PE = PE->getSIG();
+  }
+
+  PE->setSIG(nuevo);
 
   return;
 }

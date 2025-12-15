@@ -79,7 +79,9 @@ private:
 public:
   SUCURSAL();
   ~SUCURSAL();
-  void AGREGAR_PERRERA(const string&);
+  // void AGREGAR_PERRERA(const string& nome);
+  void AGREGAR_PERRERA_GUI(const string& nombre, const string& pais, const string& provincia, const string& partido, const string& localidad,
+                           const string& direccion, const int altura);
   void AGREGAR_PERRITO(const string&);
   void MOSTRAR_PERRERAS();
   void MOSTRAR_PERRITOS(const string&);

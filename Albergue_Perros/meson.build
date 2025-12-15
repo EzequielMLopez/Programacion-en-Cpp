@@ -5,6 +5,7 @@ project('Albergue_Perros', 'cpp',
 
 # Reconoce todos los *.cpp que hay dentro de src
 src_dir = 'src' 
+gui_dir = 'gui'
 
 src = files (
   join_paths(src_dir, 'main.cpp'),
@@ -18,14 +19,19 @@ src = files (
   join_paths(src_dir, 'Funciones_Main.cpp'),
 )
 
+gui = files (
+  join_paths(gui_dir, 'MainWindow.cpp'),
+  join_paths(gui_dir, 'AddPerreraDialog.cpp'),
+)
+
 # Primero definimos la dependencia de gtkmm 4
 gtkmm_dep = dependency('gtkmm-4.0', version: '>= 4.6.0')
 
 # Mantengo los headers accesibles
-inc = include_directories('src')
+inc = include_directories('src', 'gui')
 
 # Luego creamos el ejecutable
-exe = executable('Albergue_Perros', src,
+exe = executable('Albergue_Perros', src, gui,
   include_directories: inc,
   dependencies: gtkmm_dep,
   win_subsystem: 'windows',
