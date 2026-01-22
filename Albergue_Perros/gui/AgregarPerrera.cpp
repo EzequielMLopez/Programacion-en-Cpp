@@ -1,4 +1,4 @@
-#include "AddPerreraDialog.h"
+#include "AgregarPerrera.h"
 #include "MainWindow.h"
 #include "gtkmm/dialog.h"
 #include "gtkmm/entry.h"
@@ -7,7 +7,7 @@
 #include "sigc++/functors/mem_fun.h"
 #include <gtkmm.h>
 
-AddPerreraDialog::AddPerreraDialog(Gtk::Window& parent) : Gtk::Dialog("Agregar_Perrera", parent) {
+Agregar_Perrera::Agregar_Perrera(Gtk::Window& parent) : Gtk::Dialog("Agregar_Perrera", parent) {
   entry_nombre.set_max_length(20);
   entry_nombre.set_text(entry_nombre.get_text());
   entry_nombre.select_region(0, entry_nombre.get_text_length());
@@ -78,15 +78,15 @@ AddPerreraDialog::AddPerreraDialog(Gtk::Window& parent) : Gtk::Dialog("Agregar_P
   add_button("Cancelar", Gtk::ResponseType::CANCEL);
 }
 
-AddPerreraDialog::~AddPerreraDialog() {}
+Agregar_Perrera::~Agregar_Perrera() {}
 
-std::string AddPerreraDialog::get_nombre() const { return entry_nombre.get_text(); }
-std::string AddPerreraDialog::get_pais() const { return entry_pais.get_text(); }
-std::string AddPerreraDialog::get_provincia() const { return entry_provincia.get_text(); }
-std::string AddPerreraDialog::get_partido() const { return entry_partido.get_text(); }
-std::string AddPerreraDialog::get_localidad() const { return entry_localidad.get_text(); }
-std::string AddPerreraDialog::get_direccion() const { return entry_direccion.get_text(); }
-int AddPerreraDialog::get_altura() const {
+std::string Agregar_Perrera::get_nombre() const { return entry_nombre.get_text(); }
+std::string Agregar_Perrera::get_pais() const { return entry_pais.get_text(); }
+std::string Agregar_Perrera::get_provincia() const { return entry_provincia.get_text(); }
+std::string Agregar_Perrera::get_partido() const { return entry_partido.get_text(); }
+std::string Agregar_Perrera::get_localidad() const { return entry_localidad.get_text(); }
+std::string Agregar_Perrera::get_direccion() const { return entry_direccion.get_text(); }
+int Agregar_Perrera::get_altura() const {
   try {
     return std::stoi(entry_altura.get_text());
   } catch (...) {

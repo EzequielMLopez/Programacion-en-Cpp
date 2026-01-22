@@ -1,5 +1,5 @@
-#ifndef GTKMM_EXAMPLEWINDOW_H
-#define GTKMM_EXAMPLEWINDOW_H
+#ifndef GTKMM_MOSTRARPERRERAS_H
+#define GTKMM_MOSTRARPERRERAS_H
 
 #include "Clases.h"
 #include "glibmm/ustring.h"

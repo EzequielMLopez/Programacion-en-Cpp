@@ -1,5 +1,5 @@
-#ifndef GTKMM_ADD_PERRERA_DIALOG_H
-#define GTKMM_ADD_PERRERA_DIALOG_H
+#ifndef GTKMM_AGREGAR_PERRERA_H
+#define GTKMM_AGREGAR_PERRERA_H
 
 #include "Clases.h"
 #include "gtkmm/entry.h"
@@ -8,7 +8,7 @@
 #include <gtkmm/dialog.h>
 #include <string>
 
-class AddPerreraDialog : public Gtk::Dialog {
+class Agregar_Perrera : public Gtk::Dialog {
 private:
   Gtk::Grid grid;
 
@@ -29,8 +29,8 @@ private:
   Gtk::Label lbl_altura;
 
 public:
-  AddPerreraDialog(Gtk::Window& parent);
-  ~AddPerreraDialog();
+  Agregar_Perrera(Gtk::Window& parent);
+  ~Agregar_Perrera();
 
   std::string get_nombre() const;
   std::string get_pais() const;

@@ -17,6 +17,7 @@ protected:
   // Signal handlers:
   void On_Agregar_Perrera();
   void On_Mostrar_Perreras();
+  void On_Mostrar_Perritos();
   void On_Salir();
   void On_Cancel();
 
@@ -25,6 +26,7 @@ protected:
   Gtk::Box v1_HBox{Gtk::Orientation::VERTICAL};
   Gtk::Button Agregar_Perrera_button;
   Gtk::Button Mostrar_Perreras_button;
+  Gtk::Button Mostrar_Perritos_button;
   Gtk::Button Salir_button;
 
   SUCURSAL sistema;
