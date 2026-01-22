@@ -1,9 +1,10 @@
 #include "MainWindow.h"
 #include "AddPerreraDialog.h"
 #include "Clases.h"
-#include "Funciones_Main.h"
+#include "MostrarPerrera.h"
 #include "gtkmm/dialog.h"
-#include <string.h>
+#include "gtkmm/object.h"
+#include "gtkmm/window.h"
 
 using namespace std;
 
@@ -53,6 +54,10 @@ void MainWindow::On_Agregar_Perrera() {
   dialog->show();
 }
 
-void MainWindow::On_Mostrar_Perreras() { sistema.MOSTRAR_PERRERAS(); }
+void MainWindow::On_Mostrar_Perreras() {
+  auto mostrar = new MostrarPerreraWindow();
+  mostrar->cargar_desde_sucursal(sistema);
+  mostrar->present();
+}
 
 void MainWindow::On_Salir() { close(); }

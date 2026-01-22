@@ -85,6 +85,7 @@ PERRERA::~PERRERA() {
 // ========== SUCURSAL ========== //
 SUCURSAL::SUCURSAL() { INICIO = nullptr; };
 
+// ========== SUCURSAL DESTRUCTOR ========== //
 SUCURSAL::~SUCURSAL() {
   PERRERA *PE, *AUX;
 
@@ -185,3 +186,5 @@ int SUCURSAL::TOTAL_PERRITOS(const string& perre) {
 
   return 1;
 };
+
+PERRERA* SUCURSAL::getINICIO() const { return INICIO; }

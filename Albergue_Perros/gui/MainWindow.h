@@ -22,6 +22,7 @@ protected:
 
   // Member widgets:
   Gtk::Box v_HBox{Gtk::Orientation::VERTICAL};
+  Gtk::Box v1_HBox{Gtk::Orientation::VERTICAL};
   Gtk::Button Agregar_Perrera_button;
   Gtk::Button Mostrar_Perreras_button;
   Gtk::Button Salir_button;

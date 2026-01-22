@@ -93,6 +93,8 @@ public:
   void ELIMINAR_PERRITO();
   void MODIFICAR_PERRITO();
   void MODIFICAR_PERRERA();
+
+  PERRERA* getINICIO() const;
 };
 
 #endif
