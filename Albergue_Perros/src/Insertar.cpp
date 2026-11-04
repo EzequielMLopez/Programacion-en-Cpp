@@ -1,4 +1,5 @@
 #include "Clases.h"
+#include <cstddef>
 #include <cstdio>
 #include <iostream>
 #include <random>
@@ -62,7 +63,7 @@ void SUCURSAL::AGREGAR_PERRERA(const string& nome) {
 }
 */
 
-void SUCURSAL::AGREGAR_PERRITO(const string& perre) {
+/* void SUCURSAL::AGREGAR_PERRITO(const string& perre) {
   PERRERA* PE;
   PERROS *P, *nuevo;
   string perrito;
@@ -108,31 +109,63 @@ void SUCURSAL::AGREGAR_PERRITO(const string& perre) {
 
   return;
 }
+*/
+
+void SUCURSAL::AGREGAR_PERRITO_GUI(const string& nombre, const int edad, const string& perre) {
+  PERRERA* PE = nullptr;
+  PERROS *P = nullptr, *nuevo = nullptr;
+  int flag = 0;
+
+  // Se crea un nuevo perro y se setea losdatos que mando el usuario.
+  nuevo = new PERROS(nombre, edad);
+
+  nuevo->setNombre(nombre);
+  nuevo->setEdad(edad);
+
+  PE = INICIO;
+
+  while (PE) {
+    if (PE->getNombre() == perre) {
+      P = PE->getINIP();
+
+      if (PE->getINIP() == NULL) {
+        PE->setINIP(nuevo);
+        return;
+      }
+
+      while (P->getSIG()) {
+        P = P->getSIG();
+      }
+      P->setSIG(nuevo);
+
+      break;
+    } else {
+      flag = 1;
+    }
+
+    PE = PE->getSIG();
+  }
+
+  if (flag == 1) {
+    cout << "La perrera cuestion no se encuentra en nuestra Base de Datos, le "
+            "pedimos que la cree para poder ingresar perritos en la misma."
+         << endl;
+  }
+}
 
 void SUCURSAL::AGREGAR_PERRERA_GUI(const string& nombre, const string& pais, const string& provincia, const string& partido, const string& localidad,
                                    const string& direccion, const int altura) {
-  PERRERA *PE, *nuevo;
+  PERRERA *PE = nullptr, *nuevo = nullptr;
 
   // Se crea una nueva perra y se solicita al usuario los datos pertinentes a la
   // misma.
   nuevo = new PERRERA(nombre);
 
-  cout << "\tPor favor, ingrese el pais donde se encuentra la perrera: ";
   nuevo->setPais(pais);
-
-  cout << "\tAhora la provincia: ";
   nuevo->setProvincia(provincia);
-
-  cout << "\tPartido: ";
   nuevo->setPartido(partido);
-
-  cout << "\tLocalidad: ";
   nuevo->setLocalidad(localidad);
-
-  cout << "\tDireccion: ";
   nuevo->setDireccion(direccion);
-
-  cout << "\tAltura: ";
   nuevo->setAltura(altura);
 
   // Condicion en caso de que la lista de sucursales/perreras este vacia.

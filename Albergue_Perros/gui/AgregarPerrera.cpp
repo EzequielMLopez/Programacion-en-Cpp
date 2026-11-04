@@ -20,27 +20,27 @@ Agregar_Perrera::Agregar_Perrera(Gtk::Window& parent) : Gtk::Dialog("Agregar_Per
 
   entry_provincia.set_max_length(20);
   entry_provincia.set_text(entry_pais.get_text());
-  entry_provincia.select_region(0, entry_pais.get_text_length());
+  entry_provincia.select_region(0, entry_provincia.get_text_length());
   entry_provincia.set_expand(false);
 
   entry_partido.set_max_length(40);
   entry_partido.set_text(entry_pais.get_text());
-  entry_partido.select_region(0, entry_pais.get_text_length());
+  entry_partido.select_region(0, entry_partido.get_text_length());
   entry_partido.set_expand(false);
 
   entry_localidad.set_max_length(20);
   entry_localidad.set_text(entry_pais.get_text());
-  entry_localidad.select_region(0, entry_pais.get_text_length());
+  entry_localidad.select_region(0, entry_localidad.get_text_length());
   entry_localidad.set_expand(false);
 
   entry_direccion.set_max_length(20);
   entry_direccion.set_text(entry_pais.get_text());
-  entry_direccion.select_region(0, entry_pais.get_text_length());
+  entry_direccion.select_region(0, entry_direccion.get_text_length());
   entry_direccion.set_expand(false);
 
   entry_altura.set_max_length(20);
-  entry_altura.set_text(entry_pais.get_text());
-  entry_altura.select_region(0, entry_pais.get_text_length());
+  entry_altura.set_text(entry_altura.get_text());
+  entry_altura.select_region(0, entry_altura.get_text_length());
   entry_altura.set_expand(false);
 
   lbl_nombre.set_text("Nombre de la Perrera:");

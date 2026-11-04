@@ -22,8 +22,10 @@ src = files (
 gui = files (
   join_paths(gui_dir, 'MainWindow.cpp'),
   join_paths(gui_dir, 'AgregarPerrera.cpp'),
+  join_paths(gui_dir, 'AgregarPerrito.cpp'),
   join_paths(gui_dir, 'MostrarPerrera.cpp'),
-  join_paths(gui_dir, 'MostrarPerritos.cpp')
+  join_paths(gui_dir, 'MostrarPerritos.cpp'),
+  join_paths(gui_dir, 'Seleccionar_Perrera_Mostrar_Perritos.cpp'),
 )
 
 # Primero definimos la dependencia de gtkmm 4

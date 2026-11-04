@@ -27,7 +27,7 @@ public:
   void setSIG(PERROS* p);
   PERROS* getSIG() const;
 
-  PERROS(const string&);
+  PERROS(const string&, const int);
   ~PERROS();
 };
 
@@ -81,12 +81,16 @@ public:
   ~SUCURSAL();
   // void AGREGAR_PERRERA(const string& nome);
   void AGREGAR_PERRERA_GUI(const string& nombre, const string& pais, const string& provincia, const string& partido, const string& localidad,
-                           const string& direccion, const int altura);
-  void AGREGAR_PERRITO(const string&);
-  void MOSTRAR_PERRERAS();
-  void MOSTRAR_PERRITOS(const string&);
-  void ELIMINAR_PERRERA(const string&); // Se elimina una unica perrera
-  void ELIMINAR_PERRERA();              // Sobre carga para eliminar a todas las perreras
+                           const string& direccion, const int altura); // Se implementa en src/Insertar.cpp
+  // void AGREGAR_PERRITO(const string&);
+  void AGREGAR_PERRITO_GUI(const string& nombre, const int edad, const string& perre); // Se implementa en src/Insertar.cpp
+  // void MOSTRAR_PERRERAS();
+  // void MOSTRAR_PERRITOS(const string&);
+  std::vector<std::string> OBTENER_NOMBRES_PERRERAS_GUI() const;                       // Se implementa en src/Mostrar.cpp
+  std::vector<std::string> OBTENER_DETALLES_PERRERAS_GUI() const;                      // Se implementa en src/Mostrar.cpp
+  std::vector<std::string> OBTENER_DETALLES_PERRITOS_GUI(const string& perrera) const; // Se implementa en src/Mostrar.cpp
+  void ELIMINAR_PERRERA(const string&);                                                // Se elimina una unica perrera
+  void ELIMINAR_PERRERA();                                                             // Sobre carga para eliminar a todas las perreras
   void MOVER_PERRITOS(int);
   void BUSCAR_PERRITO(const string&);
   void BUSCAR_PERRITO();

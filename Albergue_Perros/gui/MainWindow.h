@@ -1,35 +1,32 @@
-#ifndef GTKMM_EXAMPLE_HELLOWORLD_H
-#define GTKMM_EXAMPLE_HELLOWORLD_H
+#ifndef ALBERGUE_WINDOW_H
+#define ALBERGUE_WINDOW_H
 
+#include "AgregarPerrera.h"
+#include "AgregarPerrito.h"
 #include "Clases.h"
-#include "gtkmm/box.h"
-#include "gtkmm/enums.h"
-#include <gtkmm/button.h>
-#include <gtkmm/window.h>
+#include "gtkmm/button.h"
+#include "gtkmm/entry.h"
+#include <gtkmm.h>
 
-class MainWindow : public Gtk::Window {
-
+class AlbergueWindow : public Gtk::Window {
 public:
-  MainWindow();
-  ~MainWindow() override;
+  AlbergueWindow(SUCURSAL& back_agr_perre);
+
+private:
+  SUCURSAL& m_back_agr_perre; // Referencia para usar mi logica
+
+  Gtk::Box m_box_main;
+  Gtk::Button m_btn_agregar_perrera;
+  Gtk::Button m_btn_agregar_perrito;
+  Gtk::Button m_btn_mostrar_perreras;
+  Gtk::Button m_btn_mostrar_perritos;
 
 protected:
-  // Signal handlers:
-  void On_Agregar_Perrera();
-  void On_Mostrar_Perreras();
-  void On_Mostrar_Perritos();
-  void On_Salir();
-  void On_Cancel();
-
-  // Member widgets:
-  Gtk::Box v_HBox{Gtk::Orientation::VERTICAL};
-  Gtk::Box v1_HBox{Gtk::Orientation::VERTICAL};
-  Gtk::Button Agregar_Perrera_button;
-  Gtk::Button Mostrar_Perreras_button;
-  Gtk::Button Mostrar_Perritos_button;
-  Gtk::Button Salir_button;
-
-  SUCURSAL sistema;
+  // Callback del botón
+  void on_boton_agregar_perrera_clicked();
+  void on_boton_agregar_perrito_clicked();
+  void on_boton_mostrar_perreras_clicked();
+  void on_boton_mostrar_perritos_clicked();
 };
 
-#endif // GTKMM_EXAMPLE_HELLOWORLD_H
+#endif // ALBERGUE_WINDOW_H

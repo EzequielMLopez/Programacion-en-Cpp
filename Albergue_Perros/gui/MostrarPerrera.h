@@ -1,61 +1,25 @@
-#ifndef GTKMM_MOSTRARPERRERAS_H
-#define GTKMM_MOSTRARPERRERAS_H
+#ifndef GTKMM_MOSTRAR_PERRERAS_H
+#define GTKMM_MOSTRAR_PERRERAS_H
 
-#include "Clases.h"
-#include "glibmm/ustring.h"
-#include "gtkmm/columnview.h"
-#include "gtkmm/liststore.h"
-#include "gtkmm/window.h"
+#include "glibmm/refptr.h"
+#include "gtkmm/dialog.h"
+#include "gtkmm/listview.h"
+#include "gtkmm/scrolledwindow.h"
+#include "gtkmm/signallistitemfactory.h"
+#include "gtkmm/stringlist.h"
 #include <gtkmm.h>
-#include <string.h>
+#include <vector>
 
-using namespace std;
-
-// =========================
-// ColumnView personalizado
-// =========================
-class MostrarPerrera : public Gtk::ColumnView {
-public:
-  MostrarPerrera();
-
-  void cargar_desde_sucursal(const SUCURSAL& sucursal);
-
+class Mostrar_Perreras : public Gtk::Dialog {
 private:
-  // ---- Modelo de columnas ----
-  class ModelColumns : public Glib::Object {
-  public:
-    static Glib::RefPtr<ModelColumns> create(const std::string& nombre, const std::string& pais, const std::string& provincia,
-                                             const std::string& partido, const std::string& localidad, const std::string& direccion, int altura);
+  Gtk::ScrolledWindow scrolled_window;
+  Gtk::ListView list_view;
+  Glib::RefPtr<Gtk::StringList> m_string_list;
+  Glib::RefPtr<Gtk::SignalListItemFactory> m_factory;
+  Glib::RefPtr<Gtk::SingleSelection> m_selection_model;
 
-    std::string nombre;
-    std::string pais;
-    std::string provincia;
-    std::string partido;
-    std::string localidad;
-    std::string direccion;
-    int altura;
-
-  protected:
-    ModelColumns(const std::string& nombre, const std::string& pais, const std::string& provincia, const std::string& partido,
-                 const std::string& localidad, const std::string& direccion, int altura);
-  };
-
-  Glib::RefPtr<Gio::ListStore<ModelColumns>> m_ListStore;
-  Glib::RefPtr<Gtk::SingleSelection> m_Selection;
-};
-
-// =========================
-// Ventana contenedora
-// =========================
-class MostrarPerreraWindow : public Gtk::Window {
 public:
-  MostrarPerreraWindow();
-
-  void cargar_desde_sucursal(const SUCURSAL& sucursal);
-
-private:
-  MostrarPerrera m_column_view;
-  Gtk::ScrolledWindow m_scroll;
+  Mostrar_Perreras(Gtk::Window& parent, const std::vector<std::string>& detalles_perreras);
+  ~Mostrar_Perreras();
 };
-
-#endif // GTKMM_EXAMPLEWINDOW_H
+#endif // GTKMM_MOSTRAR_PERRERAS_H
