@@ -6,7 +6,7 @@
 using namespace std;
 
 // ========== PERROS CONSTRUCTOR ========== //
-PERROS::PERROS(const string& nomine) {
+PERROS::PERROS(const string& nomine, const int ed) {
   edad = 0;
   SIG = nullptr;
   nombre = nomine;

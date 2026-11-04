@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void SUCURSAL::MODIFICAR_PERRITO() {
+/* void SUCURSAL::MODIFICAR_PERRITO() {
   PERRERA* PE;
   PERROS* P;
   char choice;
@@ -91,9 +91,9 @@ void SUCURSAL::MODIFICAR_PERRITO() {
   }
 
   return;
-}
+} */
 
-void SUCURSAL::MODIFICAR_PERRERA() {
+/* void SUCURSAL::MODIFICAR_PERRERA() {
   PERRERA* PE;
   char choice;
   string perrera, nombre, pais, provincia, partido, localidad, direccion;
@@ -212,4 +212,4 @@ void SUCURSAL::MODIFICAR_PERRERA() {
   }
 
   return;
-}
+} */

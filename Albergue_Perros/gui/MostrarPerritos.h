@@ -2,54 +2,25 @@
 #define GTKMM_MOSTRARPERRITOS_H
 
 #include "Clases.h"
-#include "giomm/liststore.h"
 #include "glibmm/refptr.h"
 #include "gtkmm.h"
-#include "gtkmm/columnview.h"
-#include "gtkmm/scrolledwindow.h"
 #include "gtkmm/singleselection.h"
-#include "gtkmm/window.h"
+#include "gtkmm/stringlist.h"
+#include <vector>
 
 using namespace std;
 
-// =========================
-// ColumnView personalizado
-// =========================
-class MostrarPerritos : public Gtk::ColumnView {
-public:
-  MostrarPerritos();
-
-  void cargar_desde_perrera(const SUCURSAL& sucursal);
-
+class Mostrar_Perritos : public Gtk::Dialog {
 private:
-  // ---- Modelo de columnas ----
-  class ModelColumns : public Glib::Object {
-  public:
-    static Glib::RefPtr<ModelColumns> create(const std::string& nombre, int edad);
+  Gtk::ScrolledWindow scrolled_window;
+  Gtk::ListView list_view;
+  Glib::RefPtr<Gtk::StringList> m_string_list;
+  Glib::RefPtr<Gtk::SignalListItemFactory> m_factory;
+  Glib::RefPtr<Gtk::SingleSelection> m_selection_model;
 
-    std::string nombre;
-    int edad;
-
-  protected:
-    ModelColumns(const std::string& nombre, int edad);
-  };
-
-  Glib::RefPtr<Gio::ListStore<ModelColumns>> m_ListStore;
-  Glib::RefPtr<Gtk::SingleSelection> m_Selection;
+public:
+  Mostrar_Perritos(Gtk::Window& parent, const std::vector<std::string>& detalles_perritos);
+  ~Mostrar_Perritos();
 };
 
-// =========================
-// Ventana contenedora
-// =========================
-class MostrarPerritosWindow : public Gtk::Window {
-public:
-  MostrarPerritosWindow();
-
-  void cargar_desde_perrera(const SUCURSAL& sucursal);
-
-private:
-  MostrarPerritos m_column_view;
-  Gtk::ScrolledWindow m_scroll;
-};
-
-#endif
+#endif // GTKMM_MOSTRARPERRITOS_H

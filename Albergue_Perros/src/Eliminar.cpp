@@ -73,7 +73,7 @@ void SUCURSAL::ELIMINAR_PERRERA() {
   return;
 }
 
-void SUCURSAL::ELIMINAR_PERRITO() {
+/* void SUCURSAL::ELIMINAR_PERRITO() {
   PERRERA* PE;
   PERROS *P, *ANT;
   char choice;
@@ -140,4 +140,4 @@ void SUCURSAL::ELIMINAR_PERRITO() {
     cout << "\t\tLa perrera ingresada no existe. Se lo retorna al Menu Principal." << endl;
 
   return;
-}
+} */
