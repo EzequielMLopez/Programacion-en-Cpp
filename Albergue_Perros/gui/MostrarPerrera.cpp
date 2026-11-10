@@ -1,6 +1,7 @@
 #include "MostrarPerrera.h"
 #include "glibmm/refptr.h"
 #include "glibmm/ustring.h"
+#include "gtkmm/entry.h"
 #include "gtkmm/enums.h"
 #include "gtkmm/label.h"
 #include "gtkmm/object.h"
@@ -14,7 +15,8 @@
 
 Mostrar_Perreras::Mostrar_Perreras(Gtk::Window& parent, const std::vector<std::string>& detalles_perreras)
     : Gtk::Dialog("Listado de Perreras", parent) {
-  set_default_size(450, 300);
+
+  set_default_size(550, 350);
 
   // Convertimos el vector de std::string a Glib::ustring que es lo que exige Gtk::StringList
   std::vector<Glib::ustring> vec_det_perreras;
@@ -35,7 +37,9 @@ Mostrar_Perreras::Mostrar_Perreras(Gtk::Window& parent, const std::vector<std::s
   m_factory->signal_setup().connect([](const std::shared_ptr<Gtk::ListItem>& list_item) {
     auto label = Gtk::make_managed<Gtk::Label>();
     label->set_halign(Gtk::Align::START);
-    label->set_margin_start(10);
+    label->set_margin_start(8);
+    label->set_margin_top(8);    // Margen superior para que las filas "respiren"
+    label->set_margin_bottom(8); // Margen inferior
     list_item->set_child(*label);
   });
 
@@ -57,15 +61,19 @@ Mostrar_Perreras::Mostrar_Perreras(Gtk::Window& parent, const std::vector<std::s
 
   // Metemos el ListView dentro de una ventana con desplazamiento (ScrolledWindow)
   scrolled_window.set_child(list_view);
-  scrolled_window.get_vexpand();
-  scrolled_window.get_hexpand();
+  scrolled_window.set_vexpand(true);
+  scrolled_window.set_hexpand(true);
   scrolled_window.set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
 
   // Añadimos el componente al área de contenido del diálogo
-  get_content_area()->append(scrolled_window);
+  auto content_area = get_content_area();
+  content_area->set_margin(12);
+  content_area->append(scrolled_window);
 
   // Botón de cierre
-  add_button("Cerrar", Gtk::ResponseType::CLOSE);
+  add_button("OK", Gtk::ResponseType::OK);
+
+  set_size_request();
 }
 
 Mostrar_Perreras::~Mostrar_Perreras() {

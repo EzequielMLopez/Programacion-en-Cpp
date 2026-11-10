@@ -1,13 +1,5 @@
 #include "Clases.h"
-#include <cstddef>
-#include <iostream>
-#include <random>
-#include <stdlib.h>
-#include <string.h>
-#include <string>
-#include <vector>
 
-using namespace std;
 /*
 void SUCURSAL::MOSTRAR_PERRERAS() {
   PERRERA* PE;
@@ -78,20 +70,7 @@ void SUCURSAL::MOSTRAR_PERRITOS(const string& perr) {
 }
  */
 
-std::vector<std::string> SUCURSAL::OBTENER_NOMBRES_PERRERAS_GUI() const {
-  std::vector<std::string> nombres;
-  PERRERA* PE = INICIO;
-
-  while (PE) {
-    std::string detalle = PE->getNombre();
-    nombres.push_back(detalle);
-    PE = PE->getSIG();
-  }
-
-  return nombres;
-}
-
-std::vector<std::string> SUCURSAL::OBTENER_DETALLES_PERRERAS_GUI() const {
+std::vector<std::string> SUCURSAL::MOSTRAR_DETALLES_PERRERAS_GUI() const {
   std::vector<std::string> lista_detalles;
   PERRERA* PE = nullptr;
 
@@ -113,45 +92,24 @@ std::vector<std::string> SUCURSAL::OBTENER_DETALLES_PERRERAS_GUI() const {
   return lista_detalles;
 }
 
-std::vector<std::string> SUCURSAL::OBTENER_DETALLES_PERRITOS_GUI(const std::string& perrera) const {
-  std::vector<std::string> lista_detalles;
-  PERRERA* PE = nullptr;
-  PERROS* P = nullptr;
-  int flag1 = 0;
-
-  if (INICIO == nullptr) {
-    lista_detalles.push_back("No existen perreras ingresadas.");
-    return lista_detalles;
-  }
-
-  PE = INICIO;
+std::vector<std::string> SUCURSAL::MOSTRAR_DETALLES_PERRITOS_GUI(const std::string& perrera) const {
+  std::vector<std::string> detalles_perritos;
+  PERRERA* PE = INICIO;
 
   while (PE) {
     if (PE->getNombre() == perrera) {
-      if (PE->getINIP() == NULL) {
-        flag1 = 1;
-        lista_detalles.push_back("Ingrese un perro dentro de la perrera deseada con la Opcion 2 del Menu Principal");
-        return lista_detalles;
+      // Obtenemos la lista de perritos de la perrera encontrada
+      std::vector<PERROS> perritos = PE->getPerritos();
+
+      for (const auto& perrito : perritos) {
+        std::string detalle_perrito = "Nombre: " + perrito.getNombre() + " | " + "Edad: " + std::to_string(perrito.getEdad()) + " años";
+        // Guardamos cada atributo del perrito en una posición independiente del vector
+        detalles_perritos.push_back(detalle_perrito);
       }
-
-      P = PE->getINIP();
-
-      while (P) {
-        std::string detalle_perri = "Nombre: " + P->getNombre() + " | " + "Edad: " + std::to_string(P->getEdad()) + " | ";
-        lista_detalles.push_back(detalle_perri);
-        P = P->getSIG();
-      }
-
-      flag1 = 1;
+      break; // Encontramos la perrera, salimos del bucle
     }
-
     PE = PE->getSIG();
   }
 
-  if (flag1 == 0) {
-    lista_detalles.push_back("No se encontro la perrera buscada.");
-    return lista_detalles;
-  }
-
-  return lista_detalles;
+  return detalles_perritos;
 }

@@ -1,13 +1,20 @@
 #include "Clases.h"
+#include "gtkmm/alertdialog.h"
+#include "gtkmm/dialog.h"
+#include "gtkmm/enums.h"
+#include <cinttypes>
+#include <functional>
+#include <gtkmm.h>
 #include <iostream>
 #include <random>
 #include <stdlib.h>
 #include <string.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-void SUCURSAL::ELIMINAR_PERRERA(const string& perre) {
+/* void SUCURSAL::ELIMINAR_PERRERA(const string& perre) {
   PERRERA *PE, *AUX;
   int flag = 0;
 
@@ -49,29 +56,7 @@ void SUCURSAL::ELIMINAR_PERRERA(const string& perre) {
 
   return;
 }
-
-void SUCURSAL::ELIMINAR_PERRERA() {
-  PERRERA *PE, *AUX;
-
-  if (INICIO == NULL) {
-    cout << "\tNo existe perrera alguna en la base de datos actual, favor de "
-            "antes de querer eliminar tener una creada almenos."
-         << endl;
-  }
-
-  PE = INICIO;
-
-  while (PE) {
-    AUX = PE;
-    PE = PE->getSIG();
-    delete AUX;
-    AUX = NULL;
-  }
-
-  INICIO = NULL;
-
-  return;
-}
+*/
 
 /* void SUCURSAL::ELIMINAR_PERRITO() {
   PERRERA* PE;
@@ -141,3 +126,84 @@ void SUCURSAL::ELIMINAR_PERRERA() {
 
   return;
 } */
+
+std::string SUCURSAL::ELIMINAR_PERRERA_GUI(const string& perrera) {
+  PERRERA *PE = nullptr, *AUX = nullptr;
+  int flag = 0;
+
+  if (INICIO == NULL) {
+    return "\tNo existe perrera alguna en la base de datos actual, favor de "
+           "antes de querer eliminar tener una creada almenos.";
+  }
+
+  if (INICIO->getNombre() == perrera) {
+    AUX = INICIO;
+    INICIO = INICIO->getSIG();
+    delete AUX;
+    return "Operacion Exitosa!";
+  }
+
+  AUX = INICIO;
+  PE = INICIO->getSIG();
+
+  while (PE) {
+    if (PE->getNombre() == perrera) {
+      AUX->setSIG(PE->getSIG());
+      PE->setSIG(nullptr);
+      delete PE;
+      flag = 1;
+      break;
+    }
+
+    AUX = PE;
+    PE = PE->getSIG();
+  }
+
+  if (flag == 0) {
+    return "\tNo se hallo la perrera especificada, favor de revisar si el "
+           "nombre de la misma esta escrito correctamente.";
+  }
+
+  return "Operacion Exitosa!";
+}
+
+std::string SUCURSAL::ELIMINAR_PERRITO_GUI(const string& perrera, const string& perrito) {
+  PERRERA* PE = INICIO;
+  PERROS *P = nullptr, *AUX = nullptr;
+  int flag = 0;
+
+  while (PE) {
+    if (PE->getNombre() == perrera && PE->getINIP() != NULL) {
+      P = PE->getINIP();
+
+      // En caso de que sea el primero
+      if (P->getNombre() == perrito) {
+        PE->setINIP(P->getSIG());
+        P->setSIG(nullptr);
+        delete P;
+        return "Operacion Exitosa!";
+      }
+
+      AUX = PE->getINIP();
+      P = P->getSIG();
+
+      while (P) {
+        if (P->getNombre() == perrito) {
+          AUX->setSIG(P->getSIG());
+          P->setSIG(nullptr);
+          delete P;
+          flag = 1;
+          return "Operacion Exitosa!";
+        }
+        P = P->getSIG();
+      }
+    }
+
+    PE = PE->getSIG();
+  }
+
+  if (flag == 0) {
+    return "\tNo se hallo el perrito especificado, favor de revisar si el "
+           "nombre del/la mismo/a esta escrito correctamente.";
+  }
+}
