@@ -7,6 +7,7 @@
 #include "MostrarPerritos.h"
 #include "Seleccionadores.h"
 #include "Seleccionar_Perrito_Modificar_Perrito.h"
+#include "Seleccionar_Perrito_Mover_Perrito.h"
 #include "giomm/asyncresult.h"
 #include "glibmm/refptr.h"
 #include "gtk/gtkconstraintguide.h"
@@ -14,6 +15,7 @@
 #include "gtkmm/dialog.h"
 #include "gtkmm/enums.h"
 #include "gtkmm/messagedialog.h"
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -23,8 +25,9 @@ using namespace std;
 AlbergueWindow::AlbergueWindow(SUCURSAL& back_agr_perre)
     : m_back_agr_perre(back_agr_perre), m_box_main(Gtk::Orientation::VERTICAL, 15), m_btn_agregar_perrera("1. Agregar Perrera"),
       m_btn_agregar_perrito("2. Agregar Perrito"), m_btn_mostrar_perreras("3. Mostrar Perreras"), m_btn_mostrar_perritos("4. Mostrar Perritos"),
-      m_btn_modificar_perrera("5. Modificar Perrera"), m_btn_modificar_perrito("6. Modificar Perrito"), m_btn_eliminar_perrera("6. Eliminar Perrera"),
-      m_btn_eliminar_perrito("7. Eliminar Perrito") {
+      m_btn_modificar_perrera("5. Modificar Perrera"), m_btn_modificar_perrito("6. Modificar Perrito"), m_btn_mover_perrito("7. Mover Perrito"),
+      m_btn_mover_todos_perritos("8. Mover Todos los Perritos"), m_btn_eliminar_perrera("9. Eliminar Perrera"),
+      m_btn_eliminar_perrito("10. Eliminar Perrito") {
 
   // Configuración básica de la ventana principal (Menú)
   set_title("Albergue de Perros - Menú Principal");
@@ -40,7 +43,10 @@ AlbergueWindow::AlbergueWindow(SUCURSAL& back_agr_perre)
   m_box_main.append(m_btn_mostrar_perritos);
   m_box_main.append(m_btn_modificar_perrera);
   m_box_main.append(m_btn_modificar_perrito);
+  m_box_main.append(m_btn_mover_perrito);
+  m_box_main.append(m_btn_mover_todos_perritos);
   m_box_main.append(m_btn_eliminar_perrera);
+  m_box_main.append(m_btn_eliminar_perrito);
 
   // Conectar la señal del botón a nuestra función callback (equivalente a elegir la opción del menú)
   m_btn_agregar_perrera.signal_clicked().connect(sigc::mem_fun(*this, &AlbergueWindow::on_boton_agregar_perrera_clicked));
@@ -49,7 +55,10 @@ AlbergueWindow::AlbergueWindow(SUCURSAL& back_agr_perre)
   m_btn_mostrar_perritos.signal_clicked().connect(sigc::mem_fun(*this, &AlbergueWindow::on_boton_mostrar_perritos_clicked));
   m_btn_modificar_perrera.signal_clicked().connect(sigc::mem_fun(*this, &AlbergueWindow::on_boton_modificar_perrera_clicked));
   m_btn_modificar_perrito.signal_clicked().connect(sigc::mem_fun(*this, &AlbergueWindow::on_boton_modificar_perrito_clicked));
+  m_btn_mover_perrito.signal_clicked().connect(sigc::mem_fun(*this, &AlbergueWindow::on_boton_mover_perrito_clicked));
+  m_btn_mover_todos_perritos.signal_clicked().connect(sigc::mem_fun(*this, &AlbergueWindow::on_boton_mover_todos_perritos_clicked));
   m_btn_eliminar_perrera.signal_clicked().connect(sigc::mem_fun(*this, &AlbergueWindow::on_boton_eliminar_perrera_clicked));
+  m_btn_eliminar_perrito.signal_clicked().connect(sigc::mem_fun(*this, &AlbergueWindow::on_boton_eliminar_perrito_clicked));
 
   // Establecer el contenedor como hijo único de la ventana
   set_child(m_box_main);
@@ -387,8 +396,8 @@ void AlbergueWindow ::on_boton_eliminar_perrera_clicked() {
           // Manejo estándar por si la operación se cancela por el sistema
         }
 
-        delete dialogo_seleccion;
-        m_proceso_activo = false;
+        dialogo_seleccion->actualizar_lista_perreras();
+        dialogo_seleccion->present();
       });
     } else {
       // Si cancela, simplemente cerramos y destruimos el selector
@@ -399,4 +408,163 @@ void AlbergueWindow ::on_boton_eliminar_perrera_clicked() {
   });
 
   dialogo_seleccion->show();
+}
+
+void AlbergueWindow ::on_boton_eliminar_perrito_clicked() {
+  // Si ya hay un proceso abierto, ignoramos cualquier Enter o clic fantasma
+  if (m_proceso_activo) {
+    return;
+  }
+  m_proceso_activo = true; // Bloqueamos nuevas ejecuciones
+
+  std::vector<std::string> nombres_perreras = m_back_agr_perre.OBTENER_NOMBRES_PERRERAS_GUI();
+  if (nombres_perreras.empty()) {
+    std::cout << "[GUI] No hay perreras registradas para consultar.\n";
+    m_proceso_activo = false; // Liberamos el bloqueo si salimos temprano
+    return;
+  }
+
+  auto dialogo_seleccion = new SeleccionarPerritoModificar(*this, m_back_agr_perre, nombres_perreras);
+
+  dialogo_seleccion->signal_response().connect([this, dialogo_seleccion](int response_id) {
+    if (response_id == static_cast<int>(Gtk::ResponseType::OK)) {
+      std::string perrera_sel = dialogo_seleccion->get_perrera_seleccionada();
+      std::string perrito_sel = dialogo_seleccion->get_perrito_seleccionado();
+      dialogo_seleccion->hide();
+
+      std::string res_operacion = m_back_agr_perre.ELIMINAR_PERRITO_GUI(perrera_sel, perrito_sel);
+
+      // Creamos el AlertDialog con el mensaje recibido del backend
+      auto alert = Gtk::AlertDialog::create("Resultado de la operación");
+      alert->set_detail(res_operacion);
+      alert->set_buttons({"Aceptar"});
+
+      // 5. Mostramos la alerta y limpiamos el diálogo selector de forma segura
+      alert->choose(*this, [this, dialogo_seleccion, alert, perrera_sel](Glib::RefPtr<Gio::AsyncResult>& result) {
+        try {
+          int resp_alert = alert->choose_finish(result);
+        } catch (const Glib::Error& err) {
+          // Manejo estándar por si la operación se cancela por el sistema
+        }
+
+        dialogo_seleccion->actualizar_lista_perritos(perrera_sel);
+        dialogo_seleccion->present();
+      });
+    } else {
+      // Si cancela, simplemente cerramos y destruimos el selector
+      dialogo_seleccion->hide();
+      delete dialogo_seleccion;
+      m_proceso_activo = false;
+    };
+  });
+
+  dialogo_seleccion->show();
+}
+
+void AlbergueWindow ::on_boton_mover_perrito_clicked() {
+  // Si ya hay un proceso abierto, ignoramos cualquier Enter o clic fantasma
+  if (m_proceso_activo) {
+    return;
+  }
+  m_proceso_activo = true; // Bloqueamos nuevas ejecuciones
+
+  std::vector<std::string> nombres_perreras = m_back_agr_perre.OBTENER_NOMBRES_PERRERAS_GUI();
+  if (nombres_perreras.empty()) {
+    std::cout << "[GUI] No hay perreras registradas para consultar.\n";
+    m_proceso_activo = false; // Liberamos el bloqueo si salimos temprano
+    return;
+  }
+
+  auto dialogo_seleccion = new SeleccionarPerritoMover(*this, m_back_agr_perre, nombres_perreras);
+
+  dialogo_seleccion->signal_response().connect([this, dialogo_seleccion, nombres_perreras](int response_id) {
+    if (response_id == static_cast<int>(Gtk::ResponseType::OK)) {
+      std::string perrera_orig_seleccionada = dialogo_seleccion->get_perrera_seleccionada();
+      std::string perrera_dest_seleccionada = dialogo_seleccion->get_perrera_dest_seleccionado();
+      std::string perrito_seleccionado = dialogo_seleccion->get_perrito_seleccionado();
+
+      dialogo_seleccion->hide();
+
+      std::string res_operacion = m_back_agr_perre.MOVER_PERRITO_GUI(perrera_orig_seleccionada, perrera_dest_seleccionada, perrito_seleccionado);
+
+      // Creamos el AlertDialog con el mensaje recibido del backend
+      auto alert = Gtk::AlertDialog::create("Resultado de la operación");
+      alert->set_detail(res_operacion);
+      alert->set_buttons({"Aceptar"});
+
+      // 5. Mostramos la alerta y limpiamos el diálogo selector de forma segura
+      alert->choose(*this, [this, dialogo_seleccion, alert, perrera_orig_seleccionada, nombres_perreras](Glib::RefPtr<Gio::AsyncResult>& result) {
+        try {
+          int resp_alert = alert->choose_finish(result);
+        } catch (const Glib::Error& err) {
+          // Manejo estándar por si la operación se cancela por el sistema
+        }
+
+        dialogo_seleccion->actualizar_lista_perreras_destino(perrera_orig_seleccionada, nombres_perreras);
+        dialogo_seleccion->actualizar_lista_perritos(perrera_orig_seleccionada);
+        dialogo_seleccion->present();
+      });
+    } else {
+      // --- ¡ESTO ERA LO QUE FALTABA! ---
+      // Si el usuario cancela o cierra la ventana de diálogo, destruimos y liberamos el bloqueo.
+      dialogo_seleccion->hide();
+      delete dialogo_seleccion;
+      m_proceso_activo = false;
+    }
+  });
+
+  dialogo_seleccion->show();
+}
+
+void AlbergueWindow::on_boton_mover_todos_perritos_clicked() {
+  // Si ya hay un proceso abierto, ignoramos cualquier Enter o clic fantasma
+  if (m_proceso_activo) {
+    return;
+  }
+  m_proceso_activo = true; // Bloqueamos nuevas ejecuciones
+
+  std::vector<std::string> nombres_perreras = m_back_agr_perre.OBTENER_NOMBRES_PERRERAS_GUI();
+  if (nombres_perreras.empty()) {
+    std::cout << "[GUI] No hay perreras registradas para consultar.\n";
+    m_proceso_activo = false; // Liberamos el bloqueo si salimos temprano
+    return;
+  }
+
+  auto dialogo_seleccion = new SeleccionarPerritoMover(*this, m_back_agr_perre, nombres_perreras, true);
+
+  dialogo_seleccion->signal_response().connect([this, dialogo_seleccion, nombres_perreras](int response_id) {
+    if (response_id == static_cast<int>(Gtk::ResponseType::OK)) {
+      std::string perrera_orig_seleccionada = dialogo_seleccion->get_perrera_seleccionada();
+      std::string perrera_dest_seleccionada = dialogo_seleccion->get_perrera_dest_seleccionado();
+
+      dialogo_seleccion->hide();
+
+      std::string res_operacion = m_back_agr_perre.MOVER_TODOS_PERRITOS_GUI(perrera_orig_seleccionada, perrera_dest_seleccionada);
+
+      // Creamos el AlertDialog con el mensaje recibido del backend
+      auto alert = Gtk::AlertDialog::create("Resultado de la operación");
+      alert->set_detail(res_operacion);
+      alert->set_buttons({"Aceptar"});
+
+      // 5. Mostramos la alerta y limpiamos el diálogo selector de forma segura
+      alert->choose(*this, [this, dialogo_seleccion, alert, perrera_orig_seleccionada, nombres_perreras](Glib::RefPtr<Gio::AsyncResult>& result) {
+        try {
+          alert->choose_finish(result);
+        } catch (const Glib::Error& err) {
+          // Manejo estándar por si la operación se cancela por el sistema
+        }
+
+        dialogo_seleccion->actualizar_lista_perreras_destino(perrera_orig_seleccionada, nombres_perreras);
+        dialogo_seleccion->present();
+      });
+    } else {
+      // --- ¡ESTO ERA LO QUE FALTABA! ---
+      // Si el usuario cancela o cierra la ventana de diálogo, destruimos y liberamos el bloqueo.
+      dialogo_seleccion->hide();
+      delete dialogo_seleccion;
+      m_proceso_activo = false;
+    }
+  });
+
+  dialogo_seleccion->present();
 }

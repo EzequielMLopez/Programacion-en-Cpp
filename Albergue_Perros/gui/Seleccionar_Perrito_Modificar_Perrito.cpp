@@ -8,7 +8,7 @@
 #include <vector>
 
 SeleccionarPerritoModificar::SeleccionarPerritoModificar(Gtk::Window& parent, SUCURSAL& backend, const std::vector<std::string>& nombres_perreras)
-    : Seleccionador(parent, "Modificar Perrito", nombres_perreras, backend), m_backend(backend) {
+    : Seleccionador(parent, "Seleccionador ", nombres_perreras, backend) {
 
   // Creamos una lambda local para reutilizar la lógica de actualización
   auto actualizar_perritos = [this]() {

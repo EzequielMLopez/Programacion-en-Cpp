@@ -100,10 +100,12 @@ public:
   //  perreras. Se implementa en src/E
   std::string ELIMINAR_PERRERA_GUI(const string&); // Se implementa en src/Eliminar.cpp
   // void ELIMINAR_PERRITO();                                                              // Se implementa en src/Eliminar.cpp
-  std::string ELIMINAR_PERRITO_GUI(const string& perrera, const string& perritos); // Se implementa en src/Eliminar.cpp
-  void MOVER_PERRITOS(int);
-  void BUSCAR_PERRITO(const string&);
-  void BUSCAR_PERRITO();
+  std::string ELIMINAR_PERRITO_GUI(const string& perrera, const string& perrito); // Se implementa en src/Eliminar.cpp
+  // void MOVER_PERRITOS(int);                                                       // Se implementa en src/Mover.cpp
+  std::string MOVER_PERRITO_GUI(const string& perrera_orig, const string& perrera_dest, const string& perrito); // Se implementa en src/Mover.cpp
+  std::string MOVER_TODOS_PERRITOS_GUI(const string& perrera_orig, const string& perrera_dest);
+  // void BUSCAR_PERRITO(const string&);
+  // void BUSCAR_PERRITO();
   // void MODIFICAR_PERRITO();
   bool MODIFICAR_PERRITO_GUI(const string& perrera, const string& nombre_buscado, const string& nombre_nuevo,
                              const int edad_nueva); // Se implementa en src/Modificar.cpp

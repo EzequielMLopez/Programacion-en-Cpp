@@ -1,5 +1,5 @@
-#ifndef GTKMM_SELECCIONAR_PERRERA_MOSTRAR_PERRITOS_H
-#define GTKMM_SELECCIONAR_PERRERA_MOSTRAR_PERRITOS_H
+#ifndef GTKMM_SELECCIONAR_PERRERA_H
+#define GTKMM_SELECCIONAR_PERRERA_H
 
 #include "Clases.h"
 #pragma once
@@ -18,10 +18,10 @@ protected:
 public:
   Seleccionador(Gtk::Window& parent, const std::string& titulo, const std::vector<std::string>& nombres_perreras, SUCURSAL& backend);
   virtual ~Seleccionador() = default;
-  void actualizar_lista_perreras();
+  virtual void actualizar_lista_perreras();
 
   // Getter unificado que ya no necesitas repetir en ningún lado
   std::string get_perrera_seleccionada() const;
 };
 
-#endif // !GTKMM_SELECCIONAR_PERRERA_MOSTRAR_PERRITOS_H
+#endif // !GTKMM_SELECCIONAR_PERRERA_H

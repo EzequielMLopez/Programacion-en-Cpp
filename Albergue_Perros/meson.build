@@ -29,6 +29,7 @@ gui = files (
   join_paths(gui_dir, 'MostrarPerritos.cpp'),
   join_paths(gui_dir, 'Seleccionadores.cpp'),
   join_paths(gui_dir, 'Seleccionar_Perrito_Modificar_Perrito.cpp'),
+  join_paths(gui_dir, 'Seleccionar_Perrito_Mover_Perrito.cpp'),
   join_paths(gui_dir, 'ModificarPerrera.cpp'),
   join_paths(gui_dir, 'ModificarPerrito.cpp'),
 )
