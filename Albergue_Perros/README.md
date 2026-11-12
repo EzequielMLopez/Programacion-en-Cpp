@@ -48,11 +48,10 @@ Para compilar y ejecutar este proyecto en sistemas Linux (Ubuntu/Debian), asegú
 sudo apt update
 sudo apt install build-essential meson ninja-build libgtkmm-4.0-dev
 
-
 # Luego Clone el repositorio para poder compilar el proyecto con la herramienta Meson
-  # 1. Clonar tu repositorio (reemplaza con tu URL)
-       git clone https://github.com/tu-usuario/Albergue-Perros.git
-       cd Albergue-Perros
+  # 1. Clonar el repositorio
+       git clone https://github.com/EzequielMLopez/Programacion-en-Cpp.git
+       cd Programacion-en-Cpp/Albergue_Perros
 
   # 2. Configurar el directorio de compilación con Meson
        meson setup builddir
