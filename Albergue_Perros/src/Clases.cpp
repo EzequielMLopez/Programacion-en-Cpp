@@ -2,12 +2,13 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 
 using namespace std;
 
 // ========== PERROS CONSTRUCTOR ========== //
-PERROS::PERROS(const string& nomine) {
-  edad = 0;
+PERROS::PERROS(const string& nomine, const int ed) {
+  edad = ed;
   SIG = nullptr;
   nombre = nomine;
   apuntado = false;
@@ -66,6 +67,18 @@ PERROS* PERRERA::getINIP() const { return INIP; }
 
 void PERRERA::setSIG(PERRERA* pe) { SIG = pe; }
 PERRERA* PERRERA::getSIG() const { return SIG; }
+
+std::vector<PERROS> PERRERA::getPerritos() const {
+  std::vector<PERROS> perritos;
+  PERROS* P = INIP;
+
+  while (P) {
+    perritos.push_back(*P);
+    P = P->getSIG();
+  }
+
+  return perritos;
+}
 
 // ========== PERRERAS DESTRUCTOR ========== //
 PERRERA::~PERRERA() {

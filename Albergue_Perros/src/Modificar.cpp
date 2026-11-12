@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void SUCURSAL::MODIFICAR_PERRITO() {
+/* void SUCURSAL::MODIFICAR_PERRITO() {
   PERRERA* PE;
   PERROS* P;
   char choice;
@@ -91,9 +91,9 @@ void SUCURSAL::MODIFICAR_PERRITO() {
   }
 
   return;
-}
+} */
 
-void SUCURSAL::MODIFICAR_PERRERA() {
+/* void SUCURSAL::MODIFICAR_PERRERA() {
   PERRERA* PE;
   char choice;
   string perrera, nombre, pais, provincia, partido, localidad, direccion;
@@ -212,4 +212,49 @@ void SUCURSAL::MODIFICAR_PERRERA() {
   }
 
   return;
+} */
+
+bool SUCURSAL::MODIFICAR_PERRERA_GUI(const string& nombre_buscado, const string& nombre_nuevo, const string& pais_nuevo,
+                                     const string& provincia_nueva, const string& partido_nuevo, const string& localidad_nueva,
+                                     const string& direccion_nueva, const int altura_nueva) {
+  PERRERA* PE = INICIO;
+
+  while (PE) {
+    if (PE->getNombre() == nombre_buscado) {
+      PE->setNombre(nombre_nuevo);
+      PE->setPais(pais_nuevo);
+      PE->setProvincia(provincia_nueva);
+      PE->setPartido(partido_nuevo);
+      PE->setLocalidad(localidad_nueva);
+      PE->setDireccion(direccion_nueva);
+      PE->setAltura(altura_nueva);
+      return true; // Modificación exitosa
+    }
+
+    PE = PE->getSIG();
+  }
+
+  return false; // No se encontro la perrera especificada
+}
+
+bool SUCURSAL::MODIFICAR_PERRITO_GUI(const string& perrera, const string& nombre_buscado, const string& nombre_nuevo, const int edad_nueva) {
+  PERRERA* PE = INICIO;
+  PERROS* P = nullptr;
+
+  while (PE) {
+    if (PE->getNombre() == perrera) {
+      P = PE->getINIP();
+      while (P) {
+        if (P->getNombre() == nombre_buscado) {
+          P->setNombre(nombre_nuevo);
+          P->setEdad(edad_nueva);
+          return true; // Modificacion exitosa
+        }
+        P = P->getSIG();
+      }
+    }
+    PE = PE->getSIG();
+  }
+
+  return false;
 }

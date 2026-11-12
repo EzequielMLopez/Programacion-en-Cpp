@@ -6,6 +6,7 @@
 
 using namespace std;
 
+/*
 void SUCURSAL::BUSCAR_PERRITO(const string& perr) {
   PERRERA* PE;
   PERROS* P;
@@ -57,7 +58,9 @@ void SUCURSAL::BUSCAR_PERRITO(const string& perr) {
 
   return;
 }
+ */
 
+/*
 void SUCURSAL::BUSCAR_PERRITO() {
   PERRERA* PE;
   PERROS* P;
@@ -106,3 +109,4 @@ void SUCURSAL::BUSCAR_PERRITO() {
 
   return;
 }
+ */

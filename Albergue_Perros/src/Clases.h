@@ -27,7 +27,7 @@ public:
   void setSIG(PERROS* p);
   PERROS* getSIG() const;
 
-  PERROS(const string&);
+  PERROS(const string&, const int);
   ~PERROS();
 };
 
@@ -66,6 +66,8 @@ public:
   void setSIG(PERRERA* pe);
   PERRERA* getSIG() const;
 
+  std::vector<PERROS> getPerritos() const;
+
   PERRERA(const string&);
   ~PERRERA();
 };
@@ -81,18 +83,36 @@ public:
   ~SUCURSAL();
   // void AGREGAR_PERRERA(const string& nome);
   void AGREGAR_PERRERA_GUI(const string& nombre, const string& pais, const string& provincia, const string& partido, const string& localidad,
-                           const string& direccion, const int altura);
-  void AGREGAR_PERRITO(const string&);
-  void MOSTRAR_PERRERAS();
-  void MOSTRAR_PERRITOS(const string&);
-  void ELIMINAR_PERRERA(const string&); // Se elimina una unica perrera
-  void ELIMINAR_PERRERA();              // Sobre carga para eliminar a todas las perreras
-  void MOVER_PERRITOS(int);
-  void BUSCAR_PERRITO(const string&);
-  void BUSCAR_PERRITO();
-  void ELIMINAR_PERRITO();
-  void MODIFICAR_PERRITO();
-  void MODIFICAR_PERRERA();
+                           const string& direccion, const int altura); // Se implementa en src/Insertar.cpp
+  // void AGREGAR_PERRITO(const string&);
+  void AGREGAR_PERRITO_GUI(const string& nombre, const int edad, const string& perre); // Se implementa en src/Insertar.cpp
+  // void MOSTRAR_PERRERAS();
+  // void MOSTRAR_PERRITOS(const string&);
+  std::vector<std::string> MOSTRAR_DETALLES_PERRERAS_GUI() const;                          // Se implementa en src/Mostrar.cpp
+  std::vector<std::string> MOSTRAR_DETALLES_PERRITOS_GUI(const string& perrera) const;     // Se implementa en src/Mostrar.cpp
+  std::vector<std::string> OBTENER_NOMBRES_PERRERAS_GUI() const;                           // Se implementa en src/ObtenerDetalles.cpp
+  std::vector<std::string> OBTENER_NOMBRES_PERRITOS_GUI(const std::string& perrera) const; // Se implementa en src/ObtenerDetalles.cpp
+  std::vector<std::string> OBTENER_DETALLES_PERRERA_GUI(const string& perrera) const;      // Se implementa en src/ObtenerDetalles.cpp
+  std::vector<std::string> OBTENER_DETALLES_PERRITOS_GUI(const string& perrera,
+                                                         const string& perrito) const; // Se implementa en src/ObtenerDetalles.cpp
+  //  void ELIMINAR_PERRERA(const string&);                                                // Se elimina una unica perrera. Se implementa en
+  //  Eliminar.cpp void ELIMINAR_PERRERA();                                                // Sobre carga para eliminar a todas las
+  //  perreras. Se implementa en src/E
+  std::string ELIMINAR_PERRERA_GUI(const string&); // Se implementa en src/Eliminar.cpp
+  // void ELIMINAR_PERRITO();                                                              // Se implementa en src/Eliminar.cpp
+  std::string ELIMINAR_PERRITO_GUI(const string& perrera, const string& perrito); // Se implementa en src/Eliminar.cpp
+  // void MOVER_PERRITOS(int);                                                       // Se implementa en src/Mover.cpp
+  std::string MOVER_PERRITO_GUI(const string& perrera_orig, const string& perrera_dest, const string& perrito); // Se implementa en src/Mover.cpp
+  std::string MOVER_TODOS_PERRITOS_GUI(const string& perrera_orig, const string& perrera_dest);
+  // void BUSCAR_PERRITO(const string&);
+  // void BUSCAR_PERRITO();
+  // void MODIFICAR_PERRITO();
+  bool MODIFICAR_PERRITO_GUI(const string& perrera, const string& nombre_buscado, const string& nombre_nuevo,
+                             const int edad_nueva); // Se implementa en src/Modificar.cpp
+  // void MODIFICAR_PERRERA();
+  bool MODIFICAR_PERRERA_GUI(const string& nombre_buscado, const string& nombre_nuevo, const string& pais_nuevo, const string& provincia_nueva,
+                             const string& partido_nuevo, const string& localidad_nueva, const string& direccion_nueva,
+                             const int altura_nueva); // Se implementa en src/Modificar.cpp
 
   PERRERA* getINICIO() const;
 };

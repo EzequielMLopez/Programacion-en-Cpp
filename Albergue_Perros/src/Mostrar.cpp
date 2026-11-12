@@ -1,11 +1,6 @@
 #include "Clases.h"
-#include <iostream>
-#include <random>
-#include <stdlib.h>
-#include <string.h>
 
-using namespace std;
-
+/*
 void SUCURSAL::MOSTRAR_PERRERAS() {
   PERRERA* PE;
 
@@ -26,7 +21,9 @@ void SUCURSAL::MOSTRAR_PERRERAS() {
 
   return;
 }
+*/
 
+/*
 void SUCURSAL::MOSTRAR_PERRITOS(const string& perr) {
   PERRERA* PE;
   PERROS* P;
@@ -70,4 +67,49 @@ void SUCURSAL::MOSTRAR_PERRITOS(const string& perr) {
   }
 
   return;
+}
+ */
+
+std::vector<std::string> SUCURSAL::MOSTRAR_DETALLES_PERRERAS_GUI() const {
+  std::vector<std::string> lista_detalles;
+  PERRERA* PE = nullptr;
+
+  if (INICIO == nullptr) {
+    lista_detalles.push_back("No hay perreras ingresadas.");
+    return lista_detalles;
+  }
+
+  PE = INICIO;
+
+  while (PE) {
+    std::string detalle = PE->getNombre() + " | " + PE->getPais() + " | " + PE->getProvincia() + " | " + PE->getPartido() + " | " +
+                          PE->getLocalidad() + " | " + PE->getDireccion() + " | " + std::to_string(PE->getAltura());
+
+    lista_detalles.push_back(detalle);
+    PE = PE->getSIG();
+  }
+
+  return lista_detalles;
+}
+
+std::vector<std::string> SUCURSAL::MOSTRAR_DETALLES_PERRITOS_GUI(const std::string& perrera) const {
+  std::vector<std::string> detalles_perritos;
+  PERRERA* PE = INICIO;
+
+  while (PE) {
+    if (PE->getNombre() == perrera) {
+      // Obtenemos la lista de perritos de la perrera encontrada
+      std::vector<PERROS> perritos = PE->getPerritos();
+
+      for (const auto& perrito : perritos) {
+        std::string detalle_perrito = "Nombre: " + perrito.getNombre() + " | " + "Edad: " + std::to_string(perrito.getEdad()) + " años";
+        // Guardamos cada atributo del perrito en una posición independiente del vector
+        detalles_perritos.push_back(detalle_perrito);
+      }
+      break; // Encontramos la perrera, salimos del bucle
+    }
+    PE = PE->getSIG();
+  }
+
+  return detalles_perritos;
 }

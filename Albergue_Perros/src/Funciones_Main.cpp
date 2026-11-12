@@ -6,7 +6,7 @@
 
 using namespace std;
 
-string nuevaPerrera() {
+/* string nuevaPerrera() {
   string perrera;
 
   cout << "\tEscoge el nombre de tu perrera: ";
@@ -31,4 +31,4 @@ void listarPerreras(SUCURSAL& system) {
   system.MOSTRAR_PERRERAS();
 
   return;
-}
+} */

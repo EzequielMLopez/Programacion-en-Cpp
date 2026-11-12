@@ -1,13 +1,16 @@
 #include "Clases.h"
+#include <cstddef>
+#include <filesystem>
 #include <iostream>
 #include <random>
 #include <stdlib.h>
 #include <string.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-void SUCURSAL::MOVER_PERRITOS(int choi) {
+/* void SUCURSAL::MOVER_PERRITOS(int choi) {
   PERRERA *PE, *AUX;
   PERROS* P;
   int perreras = 0, cantidad = 0, i = 0, pos = 0, j = 0, flag = 0, k = 0, salir = 0, perritos = 0;
@@ -274,4 +277,106 @@ void SUCURSAL::MOVER_PERRITOS(int choi) {
     }
   }
   return;
+} */
+
+std::string SUCURSAL::MOVER_PERRITO_GUI(const string& perrera_orig, const string& perrera_dest, const string& perrito) {
+  PERRERA* PE = INICIO;
+  PERROS *P = nullptr, *AUX = nullptr, *AUX2 = nullptr;
+  int flag = 0;
+
+  while (PE) {
+    if (PE->getNombre() == perrera_orig) {
+      AUX = PE->getINIP();
+
+      // En caso de que sea el primero el perrito el seleccionado
+      if (AUX->getNombre() == perrito) {
+        PE->setINIP(AUX->getSIG());
+        AUX->setSIG(nullptr);
+        break;
+      }
+
+      AUX2 = PE->getINIP();
+      AUX = AUX->getSIG();
+
+      // En caso de que no sea el primer perrito el seleccionado
+      while (AUX) {
+        if (AUX->getNombre() == perrito) {
+          AUX2->setSIG(AUX->getSIG());
+          AUX->setSIG(nullptr);
+          flag = 1;
+          break;
+        };
+
+        AUX2 = AUX;
+        AUX = AUX->getSIG();
+      }
+
+      if (flag == 1)
+        break;
+    }
+
+    PE = PE->getSIG();
+  }
+
+  PE = INICIO;
+  while (PE) {
+    if (PE->getNombre() == perrera_dest) {
+      if (PE->getINIP() != NULL) {
+        P = PE->getINIP();
+
+        while (P->getSIG()) {
+          P = P->getSIG();
+        }
+
+        P->setSIG(AUX);
+        return "Operacion de Movilidad Exitosa!";
+      } else {
+        PE->setINIP(AUX);
+        return "Operacion de Movilidad Exitosa!";
+      }
+    }
+
+    PE = PE->getSIG();
+  }
+
+  return "Operacion de Movilidad Exitosa!";
+}
+
+std::string SUCURSAL::MOVER_TODOS_PERRITOS_GUI(const string& perrera_orig, const string& perrera_dest) {
+  PERRERA *Perrera_Origen = nullptr, *Perrera_Destino = nullptr, *AUX = INICIO;
+  PERROS* Perro_Destino = nullptr;
+
+  while (AUX) {
+    if (AUX->getNombre() == perrera_orig)
+      Perrera_Origen = AUX;
+    if (AUX->getNombre() == perrera_dest)
+      Perrera_Destino = AUX;
+
+    AUX = AUX->getSIG();
+  }
+
+  // Verificamos que ambas existan y que la origen tenga perritos para mover
+  if (!Perrera_Origen || !Perrera_Destino) {
+    return "Error: No se encontró la perrera de origen o destino.";
+  }
+
+  if (Perrera_Origen->getINIP() == nullptr) {
+    return "La perrera de origen está vacía, no hay perritos para mover.";
+  }
+
+  // En caso de que la perrera de destino no tenga Perros cargados
+  if (Perrera_Destino->getINIP() == nullptr) {
+    Perrera_Destino->setINIP(Perrera_Origen->getINIP());
+  } else {
+    Perro_Destino = Perrera_Destino->getINIP();
+    while (Perro_Destino->getSIG()) {
+      Perro_Destino = Perro_Destino->getSIG();
+    }
+
+    Perro_Destino->setSIG(Perrera_Origen->getINIP());
+  }
+
+  Perrera_Origen->setINIP(nullptr);
+
+  return "Operacion de Movilidad Total Completada Exitosamente!";
 }

@@ -1,7 +1,6 @@
 #ifndef GTKMM_AGREGAR_PERRERA_H
 #define GTKMM_AGREGAR_PERRERA_H
 
-#include "Clases.h"
 #include "gtkmm/entry.h"
 #include "gtkmm/grid.h"
 #include "gtkmm/label.h"
@@ -41,4 +40,4 @@ public:
   int get_altura() const;
 };
 
-#endif
+#endif // GTKMM_AGREGAR_PERRERA_H
